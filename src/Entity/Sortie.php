@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SortieRepository")
@@ -18,36 +19,44 @@ class Sortie
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Le champ doit être renseigné !")
+     * @Assert\Length(max="255", maxMessage="Ce nom est trop long.")
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
     /**
+     * @Assert\NotBlank(message="Merci d'indiquer une heure de début.")
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\NotBlank(message="Merci d'indiquer une durée pour votre sortie.")
      * @ORM\Column(type="time")
      */
     private $duree;
 
     /**
+     * @Assert\NotBlank(message="Merci d'indiquer une date limite d'inscription.")
      * @ORM\Column(type="datetime")
      */
     private $dateLimiteInscription;
 
     /**
+     * @Assert\NotBlank(message="Merci d'indiquer un nombre maximum d'inscriptions.")
      * @ORM\Column(type="integer")
      */
     private $nbInscriptionMax;
 
     /**
+     * @Assert\NotBlank(message="Merci d'inscrire des informations sur votre sortie !")
      * @ORM\Column(type="text")
      */
     private $infosSortie;
 
     /**
+     * @Assert\NotBlank(message="Merci d'indiquer un l'état de votre sortie.")
      * @ORM\ManyToOne(targetEntity="App\Entity\Etat", inversedBy="sortie")
      */
     private $etat;
