@@ -28,8 +28,14 @@ class Campus
      */
     private $participants;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="campus")
+     */
+    private $site;
+
     public function __construct()
     {
+        $this->site = new ArrayCollection();
         $this->participants = new ArrayCollection();
     }
 
@@ -80,4 +86,21 @@ class Campus
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSite(): ArrayCollection
+    {
+        return $this->site;
+    }
+
+    /**
+     * @param ArrayCollection $site
+     */
+    public function setSite(ArrayCollection $site): void
+    {
+        $this->site = $site;
+    }
+
 }
