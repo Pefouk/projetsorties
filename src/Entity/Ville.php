@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Asserts;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")
@@ -19,6 +20,9 @@ class Ville
 
     /**
      * @ORM\Column(type="string", length=255)
+     *@Asserts\NotBlank()
+     * @Asserts\Length(min=3, minMessage="{{ limit }} caractères mini",
+     *     max=255)
      */
     private $nom;
 

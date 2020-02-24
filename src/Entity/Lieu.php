@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Asserts;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LieuRepository")
+ *
  */
 class Lieu
 {
@@ -19,32 +22,39 @@ class Lieu
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Asserts\Length(min=3, minMessage="{{ limit }} caractères mini",
+     *     max=255)
+     * @Asserts\NotBlank()
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Assert\NotBlank()
      */
     private $rue;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
+     *
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $longitude;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ville", inversedBy="lieu")
      * @ORM\JoinColumn(nullable=false)
+     *
      */
     private $ville;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="lieu")
+     *
      */
     private $sortie;
 
