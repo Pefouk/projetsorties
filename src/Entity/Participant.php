@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Asserts;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantRepository")
@@ -20,41 +21,57 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Asserts\NotBlank()
+     * @Asserts\Length(min=2, minMessage="Merci de mettre au moins 2 caractères pour le nom !", max=40, maxMessage="Merci de mettre moins de 40 caractères pour le nom !")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Asserts\NotBlank()
+     * @Asserts\Length(min=2, minMessage="Merci de mettre au moins 2 caractères pour le prénom !", max=40, maxMessage="Merci de mettre mois de 40 caractères pour le prenom !")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=12)
+     * @Asserts\NotBlank()
+     * @Asserts\Length(min=8, minMessage="Numero de téléphone incorrect", max=12, maxMessage="Numero de téléphone incorrect")
      */
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Asserts\NotBlank()
+     * @Asserts\Email()
+     * @Asserts\Unique(message="Email déja utilisé !")
      */
     private $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Asserts\NotBlank()
+     * @Asserts\Length(min=6, minMessage="Merci de mettre au moins 6 caractères pour le mot de passe !", max=50, maxMessage="Merci de mettre mois de 50 caractères pour le mot de passe !")
      */
     private $motPasse;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Asserts\NotBlank()
      */
     private $administrateur;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Asserts\NotBlank()
      */
     private $actif;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Asserts\NotBlank()
+     * @Asserts\Unique(message="Pseudo déja utilisé !")
+     * @Asserts\Length(min=2, minMessage="Merci de mettre un pseudo d'au moins 2 caractère !", max=50, maxMessage="Merci de mettre un pseudo de moins de 50 caractères")
      */
     private $pseudo;
 
@@ -236,8 +253,7 @@ class Participant implements UserInterface
     {
         if ($this->administrateur === true) {
             return (['ROLE_ADMIN']);
-        }
-        else {
+        } else {
             return (['ROLE_USER']);
         }
     }
