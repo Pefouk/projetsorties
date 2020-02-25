@@ -1,4 +1,7 @@
 security:
+    encoders:
+        App\Entity\Participant:
+            algorithm: bcrypt
 
     providers:
         main_provider:
@@ -12,18 +15,19 @@ security:
         main:
             pattern: ^/
             provider: main_provider
-            anonymous: ~
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            anonymous: lazy
             form_login:
                 login_path: login
                 check_path: login
             logout_on_user_change: true
             logout:
-                path: logout
+                path: app_logout
                 target: /
 
-    encoders:
-        App\Entity\Participant:
-            algorithm: bcrypt
+
 
     access_control:
 #        - { path: ^/admin, roles: ROLE_ADMIN }
