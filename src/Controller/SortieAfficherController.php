@@ -23,7 +23,7 @@ class SortieAfficherController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $entityManager)
     {
-        $this->fakeConnect(1);
+        //$this->fakeConnect(1);
         $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $form = $this->createForm(FiltrerSortiesType::class);
         $res = $sortiesRepo->findBy(['campus' => $this->getUser()->getCampus()]);
