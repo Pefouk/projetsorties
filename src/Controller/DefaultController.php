@@ -19,4 +19,15 @@ class DefaultController extends AbstractController
     {
         return $this->render('home/home.html.twig');
     }
+
+    /**
+     * @Route("/mon_profil", name="mon_profil")
+     */
+    /*Cette fonction renvoie la page qui permet dafficher le profil de lutilisateur connecté*/
+    public function afficherMonProfil()
+    {
+
+        return $this->render('user/myprofil.html.twig');
+    }
+
 }
