@@ -25,20 +25,9 @@ class Campus
      */
     private $nom;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Participant", mappedBy="campus")
-     */
-    private $participants;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="campus")
-     */
-    private $site;
 
     public function __construct()
     {
-        $this->site = new ArrayCollection();
-        $this->participants = new ArrayCollection();
     }
 
     public function getId(): ?int

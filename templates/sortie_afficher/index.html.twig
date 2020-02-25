@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block main %}
-    {% if sorties is not defined %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    {% if sorties is empty %}
         <h2>Pas de sorties trouvés !</h2>
     {% else %}
         <table>
@@ -30,10 +33,10 @@
                     <td>{{ sortie.nom }}</td>
                     <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                     <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
-                    <td>{#TODO#}{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.nbInscriptionMax }}</td>
                     <td>{{ sortie.etat.libelle }}</td>
                     <td>{#TODO#}x</td>
-                    <td>{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }}</td>
+                    <td>{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom[:1] }}</td>
                     <td>{#TODO#}</td>
                 </tr>
             {% endfor %}

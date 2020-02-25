@@ -79,7 +79,7 @@ class Sortie
     private $inscrits;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="site")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus")
      */
     private $campus;
 

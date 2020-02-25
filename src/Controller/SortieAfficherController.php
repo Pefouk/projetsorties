@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\FiltrerSortiesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,9 @@ class SortieAfficherController extends AbstractController
     {
         $this->fakeConnect(1);
         $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $res = $sortiesRepo->findAll();
-        return $this->render('sortie_afficher/index.html.twig', ['sorties' => $res]);
+        $form = $this->createForm(FiltrerSortiesType::class);
+        $res = $sortiesRepo->findBy(['campus' => $this->getUser()->getCampus()]);
+        return $this->render('sortie_afficher/index.html.twig', ['sorties' => $res, 'form' => $form->createView()]);
     }
 
     private function fakeConnect(int $id) {

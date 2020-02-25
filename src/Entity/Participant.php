@@ -80,7 +80,7 @@ class Participant implements UserInterface
     private $avatar;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus")
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
