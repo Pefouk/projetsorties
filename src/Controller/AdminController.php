@@ -29,7 +29,7 @@ class AdminController extends AbstractController
     {
         $basicUser = new Participant();
         $basicUser->setActif(1);
-        $basicUser->setAdministrateur(0);
+        $basicUser->setAdministrateur(1);
         $registerForm = $this->createForm(RegisterType::class, $basicUser);
 
         $registerForm->handleRequest($request);
@@ -41,8 +41,7 @@ class AdminController extends AbstractController
             $em->persist($basicUser);
             $em->flush();
             $this->addFlash("success", "Compte créé.");
-            return $this->redirectToRoute("home");
-        }
+            }
         return $this->render('admin/register.html.twig',
             [
                 "registerForm"=> $registerForm->createView(),

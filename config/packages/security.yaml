@@ -26,10 +26,10 @@ security:
             algorithm: bcrypt
 
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_USER }
+#        - { path: ^/admin, roles: ROLE_ADMIN }
+#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/, roles: ROLE_USER }
         #- { path: ^/, roles: ROLE_USER } toutes les pages sont protégés et seuls les connectés peuvent aller sur les pages du site =>
         #{ path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY } ET { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }DOIT ETRE EN DERNIER SINON LES AUTRES SONT VALIDE AVANT ET LAISSE PASSER;
 
