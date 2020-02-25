@@ -103,7 +103,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.2"
+        "version": "7.3"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -137,6 +137,9 @@
         "files": [
             "./public/.htaccess"
         ]
+    },
+    "symfony/asset": {
+        "version": "v4.4.4"
     },
     "symfony/cache": {
         "version": "v4.4.4"
