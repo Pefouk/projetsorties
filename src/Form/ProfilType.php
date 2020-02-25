@@ -40,13 +40,14 @@ class ProfilType extends AbstractType
                 'options'=>['attr'=>['class'=>'password-field']],
                     'first_options'=>array('label'=>'Mot de passe :'),
                     'second_options'=>array('label'=>'Confirmation :')])
-/*            ->add('campus', null,
+            ->add('campus', null,
                 [
                     'label'=>'Campus',
-                    'choice_label'=>'name'
-                ])*/
+                    'choice_label'=>'nom'
+                ])
             ->add('avatar', FileType::class, [
-                'label'=>'Ma photo :'
+                'label'=>'Ma photo :',
+                'mapped' => false,
             ])
         ;
     }
