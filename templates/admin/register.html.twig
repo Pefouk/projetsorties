@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Créer un compte | {{ parent() }}{% endblock %}
+{% block main %}
+    <h2>Créer un compte</h2>
+    <div class="form-group">
+        {{ form_start(registerForm) }}<br>
+        {{ form_row(registerForm.pseudo) }}<br>
+        {{ form_row(registerForm.prenom) }}<br>
+        {{ form_row(registerForm.nom) }}<br>
+        {{ form_row(registerForm.telephone) }}<br>
+        {{ form_row(registerForm.mail) }}<br>
+        {{ form_row(registerForm.motPasse) }}<br>
+        {{ form_row(registerForm.campus) }}<br>
+        <button type="submit" class="btn btn-primary">Créer le compte</button>
+        <button type="reset" class="btn btn-secondary">Effacer</button>
+        {{ form_end(registerForm) }}<br>
+    </div>
+{% endblock %}

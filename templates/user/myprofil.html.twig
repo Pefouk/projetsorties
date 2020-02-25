@@ -2,4 +2,15 @@
 {% block title %}Mon profil | {{ parent() }}{% endblock %}
 {% block main %}
     <h2>Mon profil</h2>
+    <div class="form-group">
+        {{ form_start(profilForm) }}<br>
+        {{ form_row(profilForm.pseudo) }}<br>
+        {{ form_row(profilForm.prenom) }}<br>
+        {{ form_row(profilForm.nom) }}<br>
+        {{ form_row(profilForm.telephone) }}<br>
+        {{ form_row(profilForm.mail) }}<br>
+        {{ form_row(profilForm.motPasse) }}<br>
+        {{ form_row(profilForm.avatar) }}<br>
+        {{ form_end(profilForm) }}<br>
+    </div>
 {% endblock %}

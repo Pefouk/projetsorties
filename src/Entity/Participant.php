@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Asserts;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantRepository")
+ * @UniqueEntity(fields={"pseudo"})
+ * @UniqueEntity(fields={"mail"})
  */
 class Participant implements UserInterface
 {
@@ -44,7 +47,6 @@ class Participant implements UserInterface
      * @ORM\Column(type="string", length=255, unique=true)
      * @Asserts\NotBlank()
      * @Asserts\Email()
-     * @Asserts\Unique(message="Email déja utilisé !")
      */
     private $mail;
 
@@ -57,29 +59,32 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Asserts\NotBlank()
      */
     private $administrateur;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Asserts\NotBlank()
      */
     private $actif;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Asserts\NotBlank()
-     * @Asserts\Unique(message="Pseudo déja utilisé !")
      * @Asserts\Length(min=2, minMessage="Merci de mettre un pseudo d'au moins 2 caractère !", max=50, maxMessage="Merci de mettre un pseudo de moins de 50 caractères")
      */
     private $pseudo;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="participants")
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
+
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="organisateur")
