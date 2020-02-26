@@ -19,6 +19,44 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findByCampusNomAndDate($campus, $nom, $datemin, $datemax)
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s')
+            ->addSelect('e')
+            ->addSelect('o')
+            ->addSelect('c')
+            ->innerJoin('s.organisateur', 'o')
+            ->innerJoin('s.etat', 'e')
+            ->innerJoin('s.campus', 'c')
+            ->where('s.etat = e.id')
+            ->andWhere('s.organisateur = o.id')
+            ->andWhere('s.campus = :campus')
+            ->andWhere('s.nom LIKE :nom')
+            ->andWhere('s.dateHeureDebut > :datemin AND s.dateHeureDebut < :datemax')
+            ->setParameters(['nom' => $nom, 'campus' => $campus, 'datemin' => $datemin, 'datemax' => $datemax])
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByCampusAndNom($campus, $nom)
+    {
+        return $this->createQueryBuilder('s')
+        ->select('s')
+        ->addSelect('e')
+        ->addSelect('o')
+        ->addSelect('c')
+        ->innerJoin('s.organisateur', 'o')
+        ->innerJoin('s.etat', 'e')
+        ->innerJoin('s.campus', 'c')
+        ->where('s.etat = e.id')
+        ->andWhere('s.organisateur = o.id')
+        ->andWhere('s.campus = :campus')
+        ->andWhere('s.nom LIKE :nom')
+        ->setParameters(['nom' => $nom, 'campus' => $campus])
+        ->getQuery()
+        ->getResult();
+    }
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

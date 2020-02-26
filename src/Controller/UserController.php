@@ -6,9 +6,8 @@ use App\Entity\Participant;
 use App\Form\ModifierProfilType;
 use App\Form\ProfilType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
@@ -26,7 +25,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/monProfil/{id}", name="monprofil", requirements={"id": "\d+"})
      */
-    /*Cette fonction renvoie la page qui permet dafficher le profil de lutilisateur connecté afin quil le modifie*/
+    /*Cette fonction renvoie la page qui permet d'afficher le profil de l'utilisateur connecté afin qu'il le modifie*/
     public function afficherMonProfil($id, EntityManagerInterface $entityManager)
     {
         $profil = $entityManager->getRepository(Participant::class)->find($id);
@@ -48,17 +47,16 @@ class UserController extends AbstractController
         $updateForm = $this->createForm(ModifierProfilType::class, $profil);
         $updateForm->handleRequest($request);
 
-        if($updateForm->isSubmitted() && $updateForm->isValid())
-        {
+        if ($updateForm->isSubmitted() && $updateForm->isValid()) {
             $em->persist($profil);
             $em->flush();
 
             $this->addFlash("success", "Votre profil a bien été modifié !");
-            return $this->redirectToRoute('monprofil', ['id'=>$profil->getId()]);
+            return $this->redirectToRoute('monprofil', ['id' => $profil->getId()]);
         }
         return $this->render('user/modifier.html.twig', [
-            "updateForm"=>$updateForm->createView(),
-            "profil"=>$profil
+            "updateForm" => $updateForm->createView(),
+            "profil" => $profil
         ]);
     }
 }
