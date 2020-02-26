@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Form\ModifierProfilType;
 use App\Form\ProfilType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,7 +69,26 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
-        $user = $this->setSortie($sortie);
+
+        $user->addSortie($sortie);
+
+        $em->persist($user);
+        $em->flush();
+        $this->addFlash('success', 'Félicitation ! vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
+        return $this->redirectToRoute("home_home");
+    }
+
+    /**
+     * @Route("/desinscrire/{id}",name="desinscrire")
+     */
+    public function sinscrire($id, Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $sortieRepo = $em->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+
+        $user->remove($sortie);
+
         $em->persist($user);
         $em->flush();
         $this->addFlash('success', 'Félicitation ! vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
