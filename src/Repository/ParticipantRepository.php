@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method Participant|null find($id, $lockMode = null, $lockVersion = null)
@@ -60,4 +61,6 @@ class ParticipantRepository extends ServiceEntityRepository
         return array_pop($result);
 
     }
+
+
 }
