@@ -227,6 +227,15 @@ class Participant implements UserInterface
         return $this->sorties;
     }
 
+    public function addSortie(Sortie $sortie): self
+    {
+        if (!$this->sorties->contains($sortie)) {
+            $this->sorties->add($sortie);
+        }
+
+        return $this;
+    }
+
     /**
      * @param ArrayCollection $sorties
      */
