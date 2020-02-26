@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -56,36 +57,37 @@ class Sortie
     private $infosSortie;
 
     /**
-     * @Assert\NotBlank(message="Merci d'indiquer un l'état de votre sortie.")
-     * @ORM\ManyToOne(targetEntity="App\Entity\Etat", inversedBy="sortie")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Participant", inversedBy="participe")
      */
-    private $etat;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sortie")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $lieu;
+    private $inscrit;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Participant", inversedBy="organise")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $organisateur;
+    private $organise;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Participant", inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Etat")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $inscrits;
+    private $etat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Campus")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $lieu;
+
     public function __construct()
     {
-        $this->inscrits = new ArrayCollection();
+        $this->inscrit = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,79 +167,82 @@ class Sortie
         return $this;
     }
 
-    public function getEtat(): Etat
+    /**
+     * @return Collection|Participant[]
+     */
+    public function getInscrit(): Collection
+    {
+        return $this->inscrit;
+    }
+
+    public function addInscrit(Participant $inscrit): self
+    {
+        if (!$this->inscrit->contains($inscrit)) {
+            $this->inscrit[] = $inscrit;
+        }
+
+        return $this;
+    }
+
+    public function removeInscrit(Participant $inscrit): self
+    {
+        if ($this->inscrit->contains($inscrit)) {
+            $this->inscrit->removeElement($inscrit);
+        }
+
+        return $this;
+    }
+
+    public function getOrganise(): ?Participant
+    {
+        return $this->organise;
+    }
+
+    public function setOrganise(?Participant $organise): self
+    {
+        $this->organise = $organise;
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
     {
         return $this->etat;
     }
 
-    public function setEtat(string $etat): self
+    public function setEtat(?Etat $etat): self
     {
         $this->etat = $etat;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLieu()
-    {
-        return $this->lieu;
-    }
-
-    /**
-     * @param mixed $lieu
-     */
-    public function setLieu($lieu): void
-    {
-        $this->lieu = $lieu;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOrganisateur()
-    {
-        return $this->organisateur;
-    }
-
-    /**
-     * @param mixed $organisateur
-     */
-    public function setOrganisateur($organisateur): void
-    {
-        $this->organisateur = $organisateur;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getInscrits(): ArrayCollection
-    {
-        return $this->inscrits;
-    }
-
-    /**
-     * @param ArrayCollection $inscrits
-     */
-    public function setInscrits(ArrayCollection $inscrits): void
-    {
-        $this->inscrits = $inscrits;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCampus()
+    public function getCampus(): ?Campus
     {
         return $this->campus;
     }
 
-    /**
-     * @param mixed $campus
-     */
-    public function setCampus($campus): void
+    public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): self
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function isInscrit(Participant $participant)
+    {
+        return true;
     }
 }

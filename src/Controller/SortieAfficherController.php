@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\FiltrerSortiesType;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,12 +31,11 @@ class SortieAfficherController extends AbstractController
     {
         $form = $this->createForm(FiltrerSortiesType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-            $res = $this->sortiesTri($form);
+        if ($form->isSubmitted() && $form->isValid() && $this->verifierForm($form))
+            $res = $this->getDoctrine()->getRepository(Sortie::class)->findByCampusAndNom($form, $this->getUser());
         else {
-            $res = $entityManager->getRepository(Sortie::class)->findBy(['campus' => $this->getUser()->getCampus()]);
+            $res = $entityManager->getRepository(Sortie::class)->findByCampus($this->getUser()->getCampus());
         }
-        dump($res);
         return $this->render('sortie_afficher/index.html.twig', ['sorties' => $res, 'form' => $form->createView()]);
     }
 
@@ -55,39 +56,4 @@ class SortieAfficherController extends AbstractController
         }
         return true;
     }
-
-    /*
-     * La fonction sortiesTri permet de récuperer les données du formulaire et retourne
-     * un tableau de Sorties avec toutes les sorties correspondant au filtre appliqué
-     * via le formulaire.
-     */
-    private function sortiesTri(FormInterface $form)
-    {
-        if ($this->verifierForm($form) === false)
-            return null;
-        $datemin = $form->getData()['datemin'];
-        $datemax = $form->getData()['datemax'];
-        $campus = $form->getData()['campus'];
-        $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        if ($form->getData()['recherche'])
-            $nom = '%' . $form->getData()['recherche'] . '%';
-        else
-            $nom = '%';
-        if ($datemin instanceof \DateTime && $datemax instanceof \DateTime)
-            $res = $sortiesRepo->findByCampusNomAndDate($campus, $nom, $datemin, $datemax);
-        else
-           $res = $sortiesRepo->findByCampusAndNom($campus, $nom);
-        return $res;
-    }
-
-    /*
-     *"campus" => campus entity
-     *"recherche" => "f"
-     *"datemin" => null
-     *"datemax" => null
-     *"organise" => false
-     *"inscrit" => false
-     *"nonInscrit" => false
-     *"passee" => false
-     */
 }
