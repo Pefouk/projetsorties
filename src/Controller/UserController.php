@@ -32,7 +32,7 @@ class UserController extends AbstractController
         $profil = $entityManager->getRepository(Participant::class)->find($id);
         $profilForm = $this->createForm(ProfilType::class, $profil);
         return $this->render('user/myprofil.html.twig', [
-            "profilForm"=>$profilForm->createView(),
+            "profilForm" => $profilForm->createView(),
             "profil" => $profil
         ]);
     }
