@@ -6,6 +6,7 @@
     <label for="username">Pseudo</label><input type="text" name="_username" id="username" class="form-control" required autofocus>
     <label for="password">Password</label><input type="password" name="_password" id="password" class="form-control">
     <input type="hidden" id="csrf_token" name="_csrf_token" value="{{ csrf_token('csrf_token') }}">
+    <div><label for="check">se souvenir de moi</label> <input type="checkbox" name="_remember_me" id="check"></div>
     <button class="btn btn-primary" type="submit">
        Connexion
     </button>
