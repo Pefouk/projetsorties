@@ -4,70 +4,51 @@ namespace App\Form;
 
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProfilType extends AbstractType
+class ModifierProfilType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('pseudo', TextType::class, [
-                'label'=>'Pseudo :',
-                'attr'=> array(
-                    'readonly'=> true,
-                )
+                'label'=>'Pseudo :'
             ])
             ->add('prenom', TextType::class, [
-                'label'=>'Prénom :',
-                'attr'=> array(
-                    'readonly'=> true,
-                )
+                'label'=>'Prénom :'
             ])
             ->add('nom', TextType::class, [
-                'label'=>'Nom :',
-                'attr'=> array(
-                    'readonly'=> true,
-                )
+                'label'=>'Nom :'
             ])
             ->add('telephone', TelType::class, [
-                'label'=>'Téléphone :',
-                'attr'=> array(
-                    'readonly'=> true,
-                )
+                'label'=>'Téléphone :'
             ])
             ->add('mail', EmailType::class, [
-                'label'=>'Email :',
-                'attr'=> array(
-                    'readonly'=> true,
-                )
+                'label'=>'Email :'
             ])
-            ->add('motPasse', PasswordType::class, [
+            ->add('motPasse', RepeatedType::class, [
+                'type'=>PasswordType::class,
+                'invalid_message'=>'Les mots de passe doivent être similaires.',
                 'required'=>true,
-                'label'=>'Mot de passe :',
-                'attr'=>['class'=>'password-field',
-                    'readonly'=>true]
-                    ])
+                'options'=>['attr'=>['class'=>'password-field']],
+                'first_options'=>array('label'=>'Mot de passe :'),
+                'second_options'=>array('label'=>'Confirmation :')])
             ->add('campus', null,
                 [
                     'label'=>'Campus',
-                    'choice_label'=>'nom',
-                    'attr'=> array(
-                        'readonly'=> true,
-                    )
+                    'choice_label'=>'nom'
                 ])
             ->add('avatar', FileType::class, [
                 'label'=>'Ma photo :',
                 'mapped' => false,
-                'attr'=> array(
-                    'readonly'=> true,
-                )
+                'required'=>false
             ])
         ;
     }

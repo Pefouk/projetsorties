@@ -12,7 +12,9 @@
         {{ form_row(profilForm.motPasse) }}<br>
         {{ form_row(profilForm.campus) }}<br>
         {{ form_row(profilForm.avatar) }}<br>
+        <button class="btn btn-warning" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier mes informations</button>
         {{ form_end(profilForm) }}<br>
+
     </div>
         {% endblock %}
 

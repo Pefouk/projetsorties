@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mon profil | {{ parent() }}{% endblock %}
+{% block main %}
+    <h2>Modifier mon profil</h2>
+    <div class="form-group">
+        {{ form_start(updateForm) }}<br>
+        {{ form_row(updateForm.prenom) }}<br>
+        {{ form_row(updateForm.pseudo) }}<br>
+        {{ form_row(updateForm.nom) }}<br>
+        {{ form_row(updateForm.telephone) }}<br>
+        {{ form_row(updateForm.mail) }}<br>
+        {{ form_row(updateForm.motPasse) }}<br>
+        {{ form_row(updateForm.campus) }}<br>
+        {{ form_row(updateForm.avatar) }}<br>
+        <button type="submit" class="btn btn-warning">Enregistrer</button>
+        {{ form_end(updateForm) }}<br>
+
+    </div>
+{% endblock %}
+
