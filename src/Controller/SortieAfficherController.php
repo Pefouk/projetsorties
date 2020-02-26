@@ -6,7 +6,6 @@ use App\Entity\Sortie;
 use App\Form\FiltrerSortiesType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Exception\AlreadySubmittedException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +36,11 @@ class SortieAfficherController extends AbstractController
         return $this->render('sortie_afficher/index.html.twig', ['sorties' => $res, 'form' => $form->createView()]);
     }
 
+    /*
+     * La fonction sortiesTri permet de récuperer les données du formulaire et retourne
+     * un tableau de Sorties avec toutes les sorties correspondant au filtre appliqué
+     * via le formulaire.
+     */
     private function sortiesTri(FormInterface $form, $entityManager)
     {
         if ($form->getData()['campus'] === null) {
@@ -44,6 +48,7 @@ class SortieAfficherController extends AbstractController
             return null;
         }
         $sortiesRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        dump($form->getData());
         $res = $sortiesRepo->findBy(['campus' => $form->getData()['campus']->getID()]);
         return $res;
     }

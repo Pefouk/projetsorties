@@ -20,6 +20,7 @@ class DefaultController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         } else {
+            $this->addFlash('success', 'Bienvenue ' . $this->getUser()->getUsername() . ' !');
             return $this->redirectToRoute('sorties_afficher');
         }
     }

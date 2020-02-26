@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Campus;
-use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -22,7 +21,7 @@ class FiltrerSortiesType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'nom',
                 'label' => 'Nom',
-                'required'=> true
+                'required' => true
             ])
             ->add('recherche', TextType::class, [
                 'label' => 'Le nom de la sortie contient',
@@ -37,21 +36,20 @@ class FiltrerSortiesType extends AbstractType
                 'label' => 'Et',
                 'required' => false
             ])->add('organise', CheckboxType::class, [
-                'required'=>false,
+                'required' => false,
                 'label' => 'Sorties dont je suis l\'organisateur/trice'
             ])->add('inscrit', CheckboxType::class, [
-                'required'=>false,
+                'required' => false,
                 'label' => 'Sorties dont je suis inscrit/e'
             ])->add('nonInscrit', CheckboxType::class, [
-                'required'=>false,
+                'required' => false,
                 'label' => 'Sorties dont je ne suis pas inscrit/e'
             ])->add('passee', CheckboxType::class, [
-                'required'=>false,
+                'required' => false,
                 'label' => 'Sorties passées'
             ])->add('Rechercher', SubmitType::class, [
-                'validate' => true
-            ])
-        ;
+                'validate' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
