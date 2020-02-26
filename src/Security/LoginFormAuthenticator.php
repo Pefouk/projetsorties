@@ -69,13 +69,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         $user = $this->entityManager->getRepository(Participant::class)
-            ->findOneBy(['pseudo' => $credentials['username']]);
+            ->findOneByPseudoOrMail($credentials['username']);
 
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Invalid credentials, oops tu t\'es planté.');
         }
-
         return $user;
     }
 
