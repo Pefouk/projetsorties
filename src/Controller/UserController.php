@@ -59,4 +59,19 @@ class UserController extends AbstractController
             "profil" => $profil
         ]);
     }
+
+    /**
+     * @Route("/sinscrire/{id}",name="sinscrire")
+     */
+    public function sinscrire($id, Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $sortieRepo = $em->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+        $user = $this->setSortie($sortie);
+        $em->persist($user);
+        $em->flush();
+        $this->addFlash('success', 'Félicitation ! vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
+        return $this->redirectToRoute("home_home");
+    }
 }
