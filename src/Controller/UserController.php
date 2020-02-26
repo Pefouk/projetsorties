@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\ProfilType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +29,7 @@ class UserController extends AbstractController
         $profil = $entityManager->getRepository(Participant::class)->find($id);
         $profilForm = $this->createForm(ProfilType::class, $profil);
         return $this->render('user/myprofil.html.twig', [
-            "profilForm"=>$profilForm->createView(),
+            "profilForm" => $profilForm->createView(),
             "profil" => $profil
         ]);
     }
