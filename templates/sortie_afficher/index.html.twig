@@ -40,7 +40,7 @@
                     {% else %}
                         <td></td>
                     {% endif %}
-                    <td>{{ sortie.organise.prenom }} {{ sortie.organise.nom[:1] }}</td>
+                    <td>{{ sortie.organise.prenom }} {{ sortie.organise.nom[:1]|upper }}</td>
                     <td> Afficher
                     {% if sortie.etat.libelle == "Ouverte" %}
                         {% if sortie.isInscrit(app.user) %}
