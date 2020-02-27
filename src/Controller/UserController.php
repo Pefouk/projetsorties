@@ -29,6 +29,8 @@ class UserController extends AbstractController
     /*Cette fonction renvoie la page qui permet dafficher le profil de lutilisateur connecté afin quil le modifie*/
     public function afficherMonProfil($id, EntityManagerInterface $entityManager)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
         $profil = $entityManager->getRepository(Participant::class)->find($id);
         $profilForm = $this->createForm(ProfilType::class, $profil);
         return $this->render('user/myprofil.html.twig', [
@@ -43,6 +45,8 @@ class UserController extends AbstractController
     /*Cette fonction permet à l'utilisateur de modifier son profil*/
     public function modifierProfil($id, Request $request)
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
         $em = $this->getDoctrine()->getManager();
         $profil = $em->getRepository(Participant::class)->find($id);
         $updateForm = $this->createForm(ModifierProfilType::class, $profil);

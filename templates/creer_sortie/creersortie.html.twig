@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}Créer une sortie | {{ parent() }}{% endblock %}
+{% block main %}
+    <div class="row">
+<div class="col-sm-12"><h2>Créer une sortie</h2>
+</div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5 form-group">
+            {{ form_start(sortieForm) }}
+            {{ form_row(sortieForm.nom) }}
+            {{ form_row(sortieForm.dateHeureDebut) }}
+            {{ form_row(sortieForm.duree) }}
+            {{ form_row(sortieForm.dateLimiteInscription) }}
+            {{ form_row(sortieForm.nbInscriptionMax) }}
+            {{ form_row(sortieForm.infosSortie) }}
+            </div>
+        <div class="col-sm-5 form-group">
+            {{ form_row(sortieForm.lieu) }}
+
+            <div class="lieuJS">
+                <script>
+                    document.write("Ca marche ?");
+                    function recupererDonneesLieu() {
+                        var villeLabel = document.createElement("label");
+                        var label = document.createAttribute("label");
+                        label.value = "Ville";
+                        villeLabel.setAttributeNode(label);
+                        var villeInput = document.createElement("p");
+                        var attValue = document.createAttribute("value");
+                        attValue.value ="j'affiche la ville";
+                        villeInput.setAttributeNode(attValue);
+                        var rueInput = document.createElement("p");
+                        var cpInput = document.createElement("p");
+                        var latInput = document.createElement("p");
+                        var lgInput = document.createElement("p");
+                        document.getElementById("ville").innerText="Tortue?";
+                        document.getElementById("rue").innerText="Tortue?";
+                        document.getElementById("cp").innerText="Tortue?";
+                        document.getElementById("latitude").innerText="Tortue?";
+                        document.getElementById("longitude").innerText="Tortue?";
+                    }
+                    recupererDonneesLieu();
+                </script>
+                {#        {{ form_row(sortieForm.lieu.ville) }}<br>
+        {{ form_row(sortieForm.lieu.rue) }}<br>
+        {{ form_row(sortieForm.lieu.codePostale) }}<br>
+        {{ form_row(sortieForm.lieu.latitude) }}<br>
+        {{ form_row(sortieForm.lieu.longitude) }}<br>#}
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-warning">Enregistrer</button>
+            {{ form_end(sortieForm) }}<br>
+        </div>
+
+
+{% endblock %}
+
