@@ -81,7 +81,7 @@ class UserController extends AbstractController
     /**
      * @Route("/desinscrire/{id}",name="desinscrire")
      */
-    public function sinscrire($id, Request $request, EntityManagerInterface $em)
+    public function desinscrire($id, Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);

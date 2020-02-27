@@ -37,7 +37,7 @@
                     <td>{{ sortie.etat.libelle }}</td>
                     <td>{#TODO#}x</td>
                     <td>{{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom[:1] }}</td>
-                    <td>{#TODO#}</td>
+                    <td><a href="{{ path('desinscrire',{'id':sortie.id}) }}">se désister</a> <a href="{{ path('sinscrire',{'id':sortie.id}) }}">s'inscrire</a></td>
                 </tr>
             {% endfor %}
             </tbody>
