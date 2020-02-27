@@ -78,8 +78,8 @@ class UserController extends AbstractController
 
         $em->persist($user);
         $em->flush();
-        $this->addFlash('success', 'Félicitation ! vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
-        return $this->redirectToRoute("home_home");
+        $this->addFlash('success', 'vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
+        return $this->redirectToRoute("sorties_afficher");
     }
 
     /**
@@ -89,13 +89,13 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
+        $sortie = $sortieRepo->findbyId($id);
 
-        $user->remove($sortie);
+        $user->removeParticipe($sortie);
 
         $em->persist($user);
         $em->flush();
-        $this->addFlash('success', 'Félicitation ! vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
-        return $this->redirectToRoute("home_home");
+        $this->addFlash('danger', 'Enfoiré tu t\'es désisté à : ' . $sortie->getNom() . '!');
+        return $this->redirectToRoute("sorties_afficher");
     }
 }
