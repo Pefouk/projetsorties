@@ -41,8 +41,11 @@
                         <td></td>
                     {% endif %}
                     <td>{{ sortie.organise.prenom }} {{ sortie.organise.nom[:1] }}</td>
-                    <td><a href="{{ path('desinscrire',{'id':sortie.id}) }}">se désister</a> <a
-                                href="{{ path('sinscrire',{'id':sortie.id}) }}">s'inscrire</a></td>
+                    {% if sortie.isInscrit(app.user) %}
+                        <td><a href="{{ path('desinscrire',{'id':sortie.id}) }}">se désister</a>
+                    {% else %}
+                        <td><a href="{{ path('sinscrire',{'id':sortie.id}) }}">s'inscrire</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

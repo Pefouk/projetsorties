@@ -24,6 +24,8 @@ class SortieRepository extends ServiceEntityRepository
 
     public function findByCampusAndNom(FormInterface $form, Participant $participant)
     {
+        $unmois = new \DateTime();
+        $unmois->sub(date_interval_create_from_date_string('1 month'));
         $campus = $form->getData()['campus'];
         if ($form->getData()['recherche'] === null)
             $nom = '%';
@@ -49,18 +51,23 @@ class SortieRepository extends ServiceEntityRepository
             ->innerJoin('s.lieu', 'l')
             ->leftJoin('s.inscrit', 'i')
             ->where('s.campus = :campus')
-            ->andWhere('s.nom LIKE :nom');
+            ->andWhere('s.nom LIKE :nom')
+            ->andWhere('s.dateHeureDebut > :unmois');
         if ($datemin !== false && $datemax !== false)
             $query->andWhere('s.dateHeureDebut > :datemin AND s.dateHeureDebut < :datemax')
                 ->setParameter('datemin', $datemin)
                 ->setParameter('datemax', $datemax);
         $query->setParameter('nom', $nom)
-            ->setParameter('campus', $campus);
+            ->setParameter('campus', $campus)
+            ->setParameter('unmois', $unmois);
         return $query->getQuery()->getResult();
     }
 
     public function findByCampus(Campus $campus)
     {
+        $unmois = new \DateTime();
+
+        $unmois->sub(date_interval_create_from_date_string('1 month'));
         return $this->createQueryBuilder('s')
             ->select('s')
             ->addSelect('e')
@@ -74,7 +81,8 @@ class SortieRepository extends ServiceEntityRepository
             ->innerJoin('s.lieu', 'l')
             ->leftJoin('s.inscrit', 'i')
             ->where('s.campus = :campus')
-            ->setParameters(['campus' => $campus])
+            ->andWhere('s.dateHeureDebut > :unmois')
+            ->setParameters(['campus' => $campus, 'unmois' => $unmois])
             ->getQuery()
             ->getResult();
     }

@@ -243,6 +243,6 @@ class Sortie
 
     public function isInscrit(Participant $participant)
     {
-        return true;
+        return ($this->inscrit->contains($participant) ? true : false);
     }
 }

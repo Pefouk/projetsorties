@@ -323,7 +323,7 @@ class Participant implements UserInterface
 
     public function isInscrit(Sortie $sortie)
     {
-        return true;
+        return ($this->participe->contains($sortie) ? true : false);
     }
 
     /**
