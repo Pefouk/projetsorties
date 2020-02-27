@@ -25,9 +25,14 @@ class Campus
      */
     private $nom;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="campus")
+     */
+    private $sorties;
 
     public function __construct()
     {
+        $this->sorties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -48,50 +53,34 @@ class Campus
     }
 
     /**
-     * @return Collection|Participant[]
+     * @return Collection|Sortie[]
      */
-    public function getParticipants(): Collection
+    public function getSorties(): Collection
     {
-        return $this->participants;
+        return $this->sorties;
     }
 
-    public function addParticipant(Participant $participant): self
+    public function addSorty(Sortie $sorty): self
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->setCampus($this);
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+            $sorty->setCampus($this);
         }
 
         return $this;
     }
 
-    public function removeParticipant(Participant $participant): self
+    public function removeSorty(Sortie $sorty): self
     {
-        if ($this->participants->contains($participant)) {
-            $this->participants->removeElement($participant);
+        if ($this->sorties->contains($sorty)) {
+            $this->sorties->removeElement($sorty);
             // set the owning side to null (unless already changed)
-            if ($participant->getCampus() === $this) {
-                $participant->setCampus(null);
+            if ($sorty->getCampus() === $this) {
+                $sorty->setCampus(null);
             }
         }
 
         return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getSite(): ArrayCollection
-    {
-        return $this->site;
-    }
-
-    /**
-     * @param ArrayCollection $site
-     */
-    public function setSite(ArrayCollection $site): void
-    {
-        $this->site = $site;
     }
 
 }

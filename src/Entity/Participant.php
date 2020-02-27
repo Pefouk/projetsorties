@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -80,25 +81,24 @@ class Participant implements UserInterface
     private $avatar;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie", mappedBy="inscrit")
+     */
+    private $participe;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="organise")
+     */
+    private $organise;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Campus")
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="organisateur")
-     */
-    private $organise;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie", mappedBy="inscrits")
-     */
-    private $sorties;
-
     public function __construct()
     {
-        $this->sorties = new ArrayCollection();
+        $this->participe = new ArrayCollection();
         $this->organise = new ArrayCollection();
     }
 
@@ -191,50 +191,6 @@ class Participant implements UserInterface
         return $this;
     }
 
-    public function getCampus(): ?Campus
-    {
-        return $this->campus;
-    }
-
-    public function setCampus(?Campus $campus): self
-    {
-        $this->campus = $campus;
-
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getOrganise(): ArrayCollection
-    {
-        return $this->organise;
-    }
-
-    /**
-     * @param ArrayCollection $organise
-     */
-    public function setOrganise(ArrayCollection $organise): void
-    {
-        $this->organise = $organise;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getSorties(): ArrayCollection
-    {
-        return $this->sorties;
-    }
-
-    /**
-     * @param ArrayCollection $sorties
-     */
-    public function setSorties(ArrayCollection $sorties): void
-    {
-        $this->sorties = $sorties;
-    }
-
     /**
      * @return mixed
      */
@@ -292,5 +248,97 @@ class Participant implements UserInterface
      */
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getParticipe(): Collection
+    {
+        return $this->participe;
+    }
+
+    public function addParticipe(Sortie $participe): self
+    {
+        if (!$this->participe->contains($participe)) {
+            $this->participe[] = $participe;
+            $participe->addInscrit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipe(Sortie $participe): self
+    {
+        if ($this->participe->contains($participe)) {
+            $this->participe->removeElement($participe);
+            $participe->removeInscrit($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getOrganise(): Collection
+    {
+        return $this->organise;
+    }
+
+    public function addOrganise(Sortie $organise): self
+    {
+        if (!$this->organise->contains($organise)) {
+            $this->organise[] = $organise;
+            $organise->setOrganise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganise(Sortie $organise): self
+    {
+        if ($this->organise->contains($organise)) {
+            $this->organise->removeElement($organise);
+            // set the owning side to null (unless already changed)
+            if ($organise->getOrganise() === $this) {
+                $organise->setOrganise(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function isInscrit(Sortie $sortie)
+    {
+        return true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
     }
 }
