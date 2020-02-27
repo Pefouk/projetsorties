@@ -72,9 +72,9 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
+        $sortie = $sortieRepo->findbyId($id);
 
-        $user->addSortie($sortie);
+        $user->addParticipe($sortie);
 
         $em->persist($user);
         $em->flush();

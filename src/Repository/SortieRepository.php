@@ -78,6 +78,26 @@ class SortieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findbyId(int $id)
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s')
+            ->addSelect('e')
+            ->addSelect('o')
+            ->addSelect('c')
+            ->addSelect('l')
+            ->addSelect('i')
+            ->innerJoin('s.organise', 'o')
+            ->innerJoin('s.etat', 'e')
+            ->innerJoin('s.campus', 'c')
+            ->innerJoin('s.lieu', 'l')
+            ->leftJoin('s.inscrit', 'i')
+            ->where('s.id = :id')
+            ->setParameters(['id' => $id])
+            ->getQuery()
+            ->getResult()[0];
+    }
     /*
      * $this->createQueryBuilder('s')->
             ->select('s')
