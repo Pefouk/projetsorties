@@ -25,6 +25,7 @@ class SortieRepository extends ServiceEntityRepository
     public function findByCampusAndNom(FormInterface $form, Participant $participant)
     {
         $unmois = new \DateTime();
+        $ajd = new \DateTime();
         $unmois->sub(date_interval_create_from_date_string('1 month'));
         $campus = $form->getData()['campus'];
         if ($form->getData()['recherche'] === null)
@@ -53,6 +54,10 @@ class SortieRepository extends ServiceEntityRepository
             ->where('s.campus = :campus')
             ->andWhere('s.nom LIKE :nom')
             ->andWhere('s.dateHeureDebut > :unmois');
+        if ($form->getData()['organise'])
+            $query->andWhere('s.organise = :user');
+        if ($form->getData()['passee'])
+            $query->andWhere('s.dateHeureDebut < :ajd');
         if ($datemin !== false && $datemax !== false)
             $query->andWhere('s.dateHeureDebut > :datemin AND s.dateHeureDebut < :datemax')
                 ->setParameter('datemin', $datemin)
@@ -60,8 +65,22 @@ class SortieRepository extends ServiceEntityRepository
         $query->setParameter('nom', $nom)
             ->setParameter('campus', $campus)
             ->setParameter('unmois', $unmois);
+        if ($form->getData()['organise'])
+            $query->setParameter('user', $participant);
+        if ($form->getData()['passee'])
+            $query->setParameter('ajd', $ajd);
         return $query->getQuery()->getResult();
     }
+
+    /*
+     *   "recherche" => null
+     *   "datemin" => null
+     *   "datemax" => null
+     *   "organise" => false
+     *   "inscrit" => false
+     *   "nonInscrit" => false
+     *   "passee" => false
+     */
 
     public function findByCampus(Campus $campus)
     {
@@ -87,6 +106,7 @@ class SortieRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
     public function findbyId(int $id)
     {
         return $this->createQueryBuilder('s')
@@ -106,22 +126,7 @@ class SortieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()[0];
     }
-    /*
-     * $this->createQueryBuilder('s')->
-            ->select('s')
-            ->addSelect('e')
-            ->addSelect('o')
-            ->addSelect('c')
-            ->innerJoin('s.organisateur', 'o')
-            ->innerJoin('s.etat', 'e')
-            ->innerJoin('s.campus', 'c')
-            ->where('s.etat = e.id')
-            ->andWhere('s.organisateur = o.id')
-            ->andWhere('s.campus = :campus')
-            ->andWhere('s.nom LIKE :nom')
-            ->andWhere('s.dateHeureDebut > :datemin AND s.dateHeureDebut < :datemax')
-            ->setParameters(['nom' => $nom, 'campus' => $campus, 'datemin' => $datemin, 'datemax' => $datemax]);
-     */
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */
