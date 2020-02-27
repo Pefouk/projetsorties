@@ -52,17 +52,6 @@ class Lieu
      */
     private $ville;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="lieu")
-     *
-     */
-    private $sortie;
-
-    public function __construct()
-    {
-        $this->sortie = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -130,22 +119,6 @@ class Lieu
     public function setVille($ville): void
     {
         $this->ville = $ville;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortie()
-    {
-        return $this->sortie;
-    }
-
-    /**
-     * @param mixed $sortie
-     */
-    public function setSortie($sortie): void
-    {
-        $this->sortie = $sortie;
     }
 
 }
