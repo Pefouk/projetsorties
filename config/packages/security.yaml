@@ -22,9 +22,6 @@ security:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
-            form_login:
-                login_path: login
-                check_path: login
             logout_on_user_change: true
             logout:
                 path: app_logout

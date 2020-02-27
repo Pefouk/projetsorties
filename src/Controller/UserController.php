@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
@@ -43,7 +44,7 @@ class UserController extends AbstractController
      * @Route("/user/modifierProfil/{id}", name="modifierProfil", requirements={"id": "\d+"})
      */
     /*Cette fonction permet à l'utilisateur de modifier son profil*/
-    public function modifierProfil($id, Request $request)
+    public function modifierProfil($id, Request $request, UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
 
@@ -52,16 +53,24 @@ class UserController extends AbstractController
         $updateForm = $this->createForm(ModifierProfilType::class, $profil);
         $updateForm->handleRequest($request);
 
+//        if ($updateForm->isValid()) {
+//            dd('1');
+//        } else {
+//            dd($updateForm->getErrors(true));
+//        }
         if ($updateForm->isSubmitted() && $updateForm->isValid()) {
+//            $hashed = $encoder->encodePassword($profil, $profil->getPassword());
+//            $profil->setMotPasse($hashed);
+
             $em->persist($profil);
             $em->flush();
+            $profil->setImageFile(null);
 
             $this->addFlash("success", "Votre profil a bien été modifié !");
             return $this->redirectToRoute('monprofil', ['id' => $profil->getId()]);
         }
         return $this->render('user/modifier.html.twig', [
             "updateForm" => $updateForm->createView(),
-            "profil" => $profil
         ]);
     }
 

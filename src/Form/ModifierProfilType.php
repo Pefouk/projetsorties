@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ModifierProfilType extends AbstractType
 {
@@ -19,36 +20,37 @@ class ModifierProfilType extends AbstractType
     {
         $builder
             ->add('pseudo', TextType::class, [
-                'label'=>'Pseudo :'
+                'label' => 'Pseudo :'
             ])
             ->add('prenom', TextType::class, [
-                'label'=>'Prénom :'
+                'label' => 'Prénom :'
             ])
             ->add('nom', TextType::class, [
-                'label'=>'Nom :'
+                'label' => 'Nom :'
             ])
             ->add('telephone', TelType::class, [
-                'label'=>'Téléphone :'
+                'label' => 'Téléphone :'
             ])
             ->add('mail', EmailType::class, [
-                'label'=>'Email :'
+                'label' => 'Email :'
             ])
             ->add('motPasse', RepeatedType::class, [
-                'type'=>PasswordType::class,
-                'invalid_message'=>'Les mots de passe doivent être similaires.',
-                'required'=>true,
-                'options'=>['attr'=>['class'=>'password-field']],
-                'first_options'=>array('label'=>'Mot de passe :'),
-                'second_options'=>array('label'=>'Confirmation :')])
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe doivent être similaires.',
+                'required' => false,
+                'mapped' => false,
+                'options' => ['attr' => ['class' => 'password-field']],
+                'first_options' => array('label' => 'Mot de passe :'),
+                'second_options' => array('label' => 'Confirmation :')])
             ->add('campus', null,
                 [
-                    'label'=>'Campus',
-                    'choice_label'=>'nom'
+                    'label' => 'Campus',
+                    'choice_label' => 'nom'
                 ])
-            ->add('avatar', FileType::class, [
-                'label'=>'Ma photo :',
-                'mapped' => false,
-                'required'=>false
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Ma photo :',
+                'mapped' => true,
+                'required' => false
             ])
         ;
     }

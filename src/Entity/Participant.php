@@ -8,11 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Asserts;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipantRepository")
  * @UniqueEntity(fields={"pseudo"})
  * @UniqueEntity(fields={"mail"})
+ * @Vich\Uploadable
  */
 class Participant implements UserInterface
 {
@@ -54,7 +57,6 @@ class Participant implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Asserts\NotBlank()
-     * @Asserts\Length(min=6, minMessage="Merci de mettre au moins 6 caractères pour le mot de passe !", max=50, maxMessage="Merci de mettre mois de 50 caractères pour le mot de passe !")
      */
     private $motPasse;
 
@@ -81,6 +83,12 @@ class Participant implements UserInterface
     private $avatar;
 
     /**
+     * @Vich\UploadableField(mapping="participant_images", fileNameProperty="avatar")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Sortie", mappedBy="inscrit")
      */
     private $participe;
@@ -96,10 +104,41 @@ class Participant implements UserInterface
      */
     private $campus;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->participe = new ArrayCollection();
         $this->organise = new ArrayCollection();
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File $imageFile
+     * @throws \Exception
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($imageFile) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
     }
 
     public function getId(): ?int
@@ -341,4 +380,5 @@ class Participant implements UserInterface
     {
         $this->avatar = $avatar;
     }
+
 }
