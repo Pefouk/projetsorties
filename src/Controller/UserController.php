@@ -144,6 +144,24 @@ class UserController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/admin/activer/{id}",name="activer")
+     */
+
+    public function activer(Request $request, EntityManagerInterface $em, $id)
+    {
+
+        $entity = $em->getRepository(Participant::class)->find($id);
+
+        if ($entity != null) {
+            $entity->setActif(1);
+            $em->flush();
+            return $this->redirectToRoute('ListeUtilisateurs');
+
+
+        }
+    }
+
 
     /**
      * @Route("/admin/supprimer/{id}",name="supprimer")

@@ -9,33 +9,50 @@
 
 {% block main %}
 
-        <table>
-            <thead>
+    <table>
+        <thead>
+        <tr>
+            <th>pseudo</th>
+            <th>Nom de l'utilisateur</th>
+            <th>prenom</th>
+            <th>téléphone</th>
+            <th>administrateur</th>
+            <th>état</th>
+            <th>photo</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for participant in liste %}
             <tr>
-                <th>pseudo</th>
-                <th>Nom de l'utilisateur</th>
-                <th>prenom</th>
-                <th>téléphone</th>
-                <th>administrateur</th>
-                <th>photo</th>
-                <th>actions</th>
+                <td>{{ participant.pseudo }}</td>
+                <td>{{ participant.nom }}</td>
+                <td>{{ participant.prenom }}</td>
+                <td>{{ participant.telephone }}</td>
+                {% if participant.administrateur %}
+                    <td>oui</td>
+                {% else %}
+                    <td>non</td>
+                {% endif %}
+                {% if participant.actif %}
+                    <td>actif</td>
+                {% else %}
+                    <td>Inactif</td>
+                {% endif %}
+                <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"></td>
+                {% if participant.actif %}
+                    <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a> <a
+                                href="{{ path('desactiver', {'id': participant.id}) }}">desactiver</a></td>
+                {% else %}
+                    <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a>
+                        <a href="{{ path('activer', {'id': participant.id}) }}">activer</a></td>
+
+                {% endif %}
+
+
             </tr>
-            </thead>
-            <tbody>
-            {% for participant in liste %}
-                <tr>
-                    <td>{{ participant.pseudo }}</td>
-                    <td>{{ participant.nom }}</td>
-                    <td>{{ participant.prenom }}</td>
-                    <td>{{ participant.telephone }}</td>
-                    <td>{{ participant.administrateur }}</td>
-                    <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"></td>
-                    <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a> <a href="{{ path('desactiver', {'id': participant.id}) }}">desactiver</a></td>
-
-
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
