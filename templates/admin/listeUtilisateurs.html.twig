@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+{% endblock %}
+
+{% block main %}
+
+        <table>
+            <thead>
+            <tr>
+                <th>pseudo</th>
+                <th>Nom de l'utilisateur</th>
+                <th>prenom</th>
+                <th>téléphone</th>
+                <th>administrateur</th>
+                <th>photo</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in liste %}
+                <tr>
+                    <td>{{ participant.pseudo }}</td>
+                    <td>{{ participant.nom }}</td>
+                    <td>{{ participant.prenom }}</td>
+                    <td>{{ participant.telephone }}</td>
+                    <td>{{ participant.administrateur }}</td>
+                    <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"></td>
+                    <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a> <a href="{{ path('desactiver', {'id': participant.id}) }}">desactiver</a></td>
+
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+{% endblock %}
