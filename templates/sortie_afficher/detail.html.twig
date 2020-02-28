@@ -55,7 +55,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                {% else %}
+            {% else %}
                 <h3>Aucun participant pour cet evenement !</h3>
             {% endif %}
         </div>
@@ -64,7 +64,9 @@
                 <a class="btn btn-primary" href="{{ path('desinscrire',{'id':sortie.id}) }}">Se desister</a></td>
             {% else %}
                 <a class="btn btn-primary" href="{{ path('sinscrire',{'id':sortie.id}) }}">S'inscrire</a></td>
-            {% endif %}
+        {% endif %}
+        {% elseif sortie.etat.libelle == 'Créée' %}
+            <a class="btn btn-secondary" href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a>
         {% endif %}
     {% endif %}
 {% endblock %}
