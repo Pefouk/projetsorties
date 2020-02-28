@@ -32,6 +32,7 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
 
+        dump($this->getUser()->getRoles());
         $profil = $entityManager->getRepository(Participant::class)->find($id);
         $profilForm = $this->createForm(ProfilType::class, $profil);
         return $this->render('user/myprofil.html.twig', [
@@ -47,7 +48,10 @@ class UserController extends AbstractController
     public function modifierProfil($id, Request $request, UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-
+        if ($this->getUser()->getId() != $id && !in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $this->addFlash('danger', 'Vous ne pouvez pas modifier le profil de quelqu\'un d\'autre !');
+            return $this->redirectToRoute('sorties_afficher');
+        }
         $em = $this->getDoctrine()->getManager();
         $profil = $em->getRepository(Participant::class)->find($id);
         $updateForm = $this->createForm(ModifierProfilType::class, $profil);
