@@ -5,7 +5,7 @@
     <h2>Mon profil</h2>
     <div class="form-group">
         {% if profil.avatar is not null %}
-            <img src="{{ asset('images/participant/') }}{{ profil.avatar }}" height="20%">
+            <img src="{{ asset('images/participant/') }}{{ profil.avatar }}" width="20%">
         {% else %}
             <p>Pas d'image de profil</p>
         {% endif %}
