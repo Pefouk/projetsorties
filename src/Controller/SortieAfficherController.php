@@ -15,12 +15,27 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class SortieAfficherController
  * @package App\Controller
- * @Route("/sorties", name="sorties_")
+ * @Route("/sortie", name="sorties_")
  */
 class SortieAfficherController extends AbstractController
 {
     /**
-     * @Route("", name="afficher")
+     * @Route("/detail/{id}", name="detail")
+     * @param $id
+     * @return Response
+     */
+    public function afficherSortie(int $id)
+    {
+        if (!$this->getUser() instanceof Participant) {
+            $this->addFlash('danger', 'Merci de vous connecter avant de poursuivre !');
+            return $this->redirectToRoute('app_login');
+        }
+        $res = $this->getDoctrine()->getRepository(Sortie::class)->findbyId($id);
+        return $this->render('sortie_afficher/detail.html.twig', ['sortie' => $res]);
+    }
+
+    /**
+     * @Route("/liste", name="afficher")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -48,7 +63,7 @@ class SortieAfficherController extends AbstractController
         } else {
             $res = $entityManager->getRepository(Sortie::class)->findByCampus($this->getUser()->getCampus());
         }
-        return $this->render('sortie_afficher/index.html.twig', ['sorties' => $res, 'form' => $form->createView()]);
+        return $this->render('sortie_afficher/liste.html.twig', ['sorties' => $res, 'form' => $form->createView()]);
     }
 
     private function verifierForm(FormInterface $form)

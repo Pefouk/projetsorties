@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 class UserController extends AbstractController
 {
     /**
@@ -88,7 +88,8 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
         $this->addFlash('success', 'vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
-        return $this->redirectToRoute("sorties_afficher");
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 
     /**
@@ -105,6 +106,7 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
         $this->addFlash('danger', 'Enfoiré tu t\'es désisté à : ' . $sortie->getNom() . '!');
-        return $this->redirectToRoute("sorties_afficher");
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 }
