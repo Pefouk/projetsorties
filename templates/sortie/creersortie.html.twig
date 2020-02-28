@@ -19,6 +19,9 @@
             </div>
         <div class="col-sm-5 form-group">
             {{ form_row(sortieForm.lieu) }}
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+                <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
+            </button>
 
                 {#<label for="lieu">Lieu :</label>
             <select id="lieu" class="form-control" onchange="afficherDetails(this)">
@@ -33,6 +36,30 @@
                 <label for="cp" id="cp">Code postal : </label><p id="cpP"></p><br>
                 <label for="lat" id="lat">Latitude : </label><p id="latP"></p><br>
                 <label for="lon" id="lon">Longitude : </label><p id="lonP"></p><br>
+            </div>
+            <button></button>
+            <!-- Button trigger modal -->
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ajouter un lieu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="lieuJS">

@@ -8,6 +8,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Etat;
 use App\Form\CreerSortieType;
+use App\Form\LieuType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,7 @@ class CreerSortieController extends AbstractController
         $this->denyAccessUnlessGranted("ROLE_USER");
 
         $sortie = new Sortie();
+        $newlieu = new Lieu();
         $lieu = $em->getRepository(Lieu::class);
         $sortie->getLieu($lieu);
         $etatRep = $this->getDoctrine()->getRepository(Etat::class);
@@ -36,6 +38,7 @@ class CreerSortieController extends AbstractController
             $lieuRepo = $this->getDoctrine()->getRepository(Lieu::class);
             $lieux = $lieuRepo->findBy([]);
             $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
+            $lieuForm = $this->createForm(LieuType::class, $newlieu);
 
             $sortieForm->handleRequest($request);
         }
@@ -49,7 +52,7 @@ class CreerSortieController extends AbstractController
             $this->addFlash("success", "Votre sortie a bien été créée.");
 
         }
-        return $this->render('creer_sortie/creersortie.html.twig', [
+        return $this->render('sortie/creersortie.html.twig', [
             "sortieForm"=>$sortieForm->createView(),
             "lieux"=> $lieux,
         ]);
