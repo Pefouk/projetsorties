@@ -69,7 +69,7 @@ class SortieRepository extends ServiceEntityRepository
             $query->setParameter('user', $participant);
         if ($form->getData()['passee'])
             $query->setParameter('ajd', $ajd);
-        return $query->orderBy('s.dateHeureDebut','DESC')->getQuery()->getResult();
+        return $query->orderBy('s.dateHeureDebut', 'DESC')->getQuery()->getResult();
     }
 
     /*
