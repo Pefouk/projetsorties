@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Créer une sortie | {{ parent() }}{% endblock %}
+
 {% block main %}
+
     <div class="row">
 <div class="col-sm-12"><h2>Créer une sortie</h2>
 </div>
@@ -17,36 +20,69 @@
         <div class="col-sm-5 form-group">
             {{ form_row(sortieForm.lieu) }}
 
+                {#<label for="lieu">Lieu :</label>
+            <select id="lieu" class="form-control" onchange="afficherDetails(this)">
+                <option value="wait" id="lieuEmp" autofocus></option>
+                {% for lieu in lieux %}
+                    <option id="lieuOp" value="{{ lieu.id }}">{{ lieu.nom }}</option>
+                {% endfor %}
+                </select><br>#}
+            <div class="labelLieu" style="">
+                <label for="ville" id="ville">Ville : </label><p id="villeP"></p><br>
+                <label for="rue" id="rue">Rue : </label><p id="rueP"></p><br>
+                <label for="cp" id="cp">Code postal : </label><p id="cpP"></p><br>
+                <label for="lat" id="lat">Latitude : </label><p id="latP"></p><br>
+                <label for="lon" id="lon">Longitude : </label><p id="lonP"></p><br>
+            </div>
+
             <div class="lieuJS">
                 <script>
-                    document.write("Ca marche ?");
-                    function recupererDonneesLieu() {
-                        var villeLabel = document.createElement("label");
-                        var label = document.createAttribute("label");
-                        label.value = "Ville";
-                        villeLabel.setAttributeNode(label);
-                        var villeInput = document.createElement("p");
-                        var attValue = document.createAttribute("value");
-                        attValue.value ="j'affiche la ville";
-                        villeInput.setAttributeNode(attValue);
-                        var rueInput = document.createElement("p");
-                        var cpInput = document.createElement("p");
-                        var latInput = document.createElement("p");
-                        var lgInput = document.createElement("p");
-                        document.getElementById("ville").innerText="Tortue?";
-                        document.getElementById("rue").innerText="Tortue?";
-                        document.getElementById("cp").innerText="Tortue?";
-                        document.getElementById("latitude").innerText="Tortue?";
-                        document.getElementById("longitude").innerText="Tortue?";
+                    function abonnement() {
+                        $("#lieuEmp").click(function () {
+                            cacher();
+                        });
+                        $("#lieuOp").click(function () {
+                            apparaitre();
+                        });
                     }
-                    recupererDonneesLieu();
+                    function cacher() {
+                        $(".labelLieu").hide();
+                    }
+                    function apparaitre() {
+                        $(".labelLieu").show();
+                    }
+                    
+                    function afficherDetails(select) {
+                        url = "{{ url('afficher_lieu', {'id': 0}) }}".replace("0", select.value);
+                        console.log(url);
+                        $.ajax(
+                        {
+                            url: url,
+                            method: "GET"
+                        })
+                        .done(function (lieuAAfficher) {
+                            console.log(lieuAAfficher);
+                            $('#villeP').text(lieuAAfficher.ville);
+                            $('#rueP').text(lieuAAfficher.rue);
+                            $('#cpP').text(lieuAAfficher.cp);
+                            $('#latP').text(lieuAAfficher.latitude);
+                            $('#lonP').text(lieuAAfficher.longitude);
+
+                        })
+                        .fail(function (xhr, status, errorThrown) {
+                            erreurAJAX(xhr, status, errorThrown);
+                        })
+                    }
+
+                    function erreurAJAX(xhr, status, errorThrown) {
+                        console.log("Une erreur est survenue : %s (%s)", errorThrown, status);
+                        console.log(xhr);
+                    }
+
+                abonnement();
                 </script>
-                {#        {{ form_row(sortieForm.lieu.ville) }}<br>
-        {{ form_row(sortieForm.lieu.rue) }}<br>
-        {{ form_row(sortieForm.lieu.codePostale) }}<br>
-        {{ form_row(sortieForm.lieu.latitude) }}<br>
-        {{ form_row(sortieForm.lieu.longitude) }}<br>#}
             </div>
+        </div>
         </div>
         <div class="col-sm-1"></div>
     </div>
@@ -55,6 +91,7 @@
             {{ form_end(sortieForm) }}<br>
         </div>
 
-
 {% endblock %}
+
+
 
