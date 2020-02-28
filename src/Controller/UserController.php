@@ -105,7 +105,7 @@ class UserController extends AbstractController
         $user->removeParticipe($sortie);
         $em->persist($user);
         $em->flush();
-        $this->addFlash('danger', 'Enfoiré tu t\'es désisté à : ' . $sortie->getNom() . '!');
+        $this->addFlash('danger', 'tu t\'es désisté à : ' . $sortie->getNom() . '!');
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }
