@@ -41,13 +41,15 @@
                         <td></td>
                     {% endif %}
                     <td>{{ sortie.organise.prenom }} {{ sortie.organise.nom[:1]|upper }}</td>
-                    <td> <a href="{{ path('sorties_detail', {'id':sortie.id}) }}">afficher</a>
-                    {% if sortie.etat.libelle == "Ouverte" %}
+                    <td><a href="{{ path('sorties_detail', {'id':sortie.id}) }}">afficher</a>
+                        {% if sortie.etat.libelle == 'Ouverte' %}
                         {% if sortie.isInscrit(app.user) %}
-                             - <a href="{{ path('desinscrire',{'id':sortie.id}) }}">se désister</a></td>
-                        {% else %}
-                            - <a href="{{ path('sinscrire',{'id':sortie.id}) }}">s'inscrire</a></td>
-                        {% endif %}
+                        - <a href="{{ path('desinscrire',{'id':sortie.id}) }}">se désister</a></td>
+                {% else %}
+                    - <a href="{{ path('sinscrire',{'id':sortie.id}) }}">s'inscrire</a></td>
+                    {% endif %}
+                {% elseif sortie.etat.libelle == 'Créée' %}
+                    - <a href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a>
                     {% endif %}
                 </tr>
             {% endfor %}

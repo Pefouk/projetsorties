@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\FiltrerSortiesType;
@@ -32,6 +33,37 @@ class SortieAfficherController extends AbstractController
         }
         $res = $this->getDoctrine()->getRepository(Sortie::class)->findbyId($id);
         return $this->render('sortie_afficher/detail.html.twig', ['sortie' => $res]);
+    }
+
+    /**
+     * @param $request
+     * @param int $id
+     * @return Response
+     * @Route("/publier/{id}", name="publier")
+     */
+    public function publierSortie(Request $request, int $id, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+        $sortie = $this->getDoctrine()->getRepository(Sortie::class)->findbyId($id);
+        $referer = $request->headers->get('referer');
+
+        if (!$user instanceof Participant) {
+            $this->addFlash('danger', 'Merci de vous connecter avant de poursuivre !');
+            return $this->redirectToPreviousOrListe($referer);
+        }
+        if ($sortie->getOrganise() != $user && !in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $this->addFlash('danger', 'Cette sortie n\'est pas la votre et vous n\'êtes pas administrateur !');
+            return $this->redirectToPreviousOrListe($referer);
+        }
+        if ($sortie->getEtat()->getLibelle() !== 'Créée') {
+            $this->addFlash('danger', 'Impossible de publier la sortie car elle n\'est pas en êtat Créée !');
+            return $this->redirectToPreviousOrListe($referer);
+        }
+        $sortie->setEtat($this->getDoctrine()->getRepository(Etat::class)->find(2));
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+        $this->addFlash('success', 'La sortie est désormais ouverte !');
+        return $this->redirectToPreviousOrListe($referer);
     }
 
     /**
@@ -82,5 +114,13 @@ class SortieAfficherController extends AbstractController
             return false;
         }
         return true;
+    }
+
+    private function redirectToPreviousOrListe($referer)
+    {
+        if ($referer == null)
+            return $this->redirectToRoute('sorties_afficher');
+        else
+            return $this->redirect($referer);
     }
 }

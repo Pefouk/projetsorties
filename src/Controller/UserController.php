@@ -109,4 +109,57 @@ class UserController extends AbstractController
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
     }
+
+    /**
+     * @Route("/admin/ListeUtilisateurs",name="ListeUtilisateurs")
+     */
+
+    public function listerUtilisateurs(Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $utilisateursRepo = $em->getRepository(Participant::class);
+        $liste = $utilisateursRepo->findAll();
+        return $this->render('admin/listeUtilisateurs.html.twig', [
+            "liste" => $liste,
+            "profil" => $user
+
+        ]);
+    }
+
+    /**
+     * @Route("/admin/desactiver/{id}",name="desactiver")
+     */
+
+    public function desactiver(Request $request, EntityManagerInterface $em, $id)
+    {
+
+        $entity = $em->getRepository(Participant::class)->find($id);
+
+        if ($entity != null) {
+            $entity->setActif(0);
+            $em->flush();
+            return $this->redirectToRoute('ListeUtilisateurs');
+
+
+        }
+    }
+
+
+    /**
+     * @Route("/admin/supprimer/{id}",name="supprimer")
+     */
+
+    public function supprimer(Request $request, EntityManagerInterface $em, $id)
+    {
+
+        $entity = $em->getRepository(Participant::class)->find($id);
+
+        if ($entity != null) {
+            $em->remove($entity);
+            $em->flush();
+
+            return $this->redirectToRoute('ListeUtilisateurs');
+        }
+
+    }
 }

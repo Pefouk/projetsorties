@@ -53,10 +53,11 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('s.inscrit', 'i')
             ->where('s.campus = :campus')
             ->andWhere('s.nom LIKE :nom')
-            ->andWhere('e.id != 1')
             ->andWhere('s.dateHeureDebut > :unmois');
         if ($form->getData()['organise'])
             $query->andWhere('s.organise = :user');
+        else
+            $query->andWhere('e.id != 1');
         if ($form->getData()['passee'])
             $query->andWhere('s.dateHeureDebut < :ajd');
         if ($datemin !== false && $datemax !== false)
