@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}Mon profil | {{ parent() }}{% endblock %}
 {% block main %}
+
+<img src="{{ asset('images/participant/') }}{{ profil.avatar }}">
+
+
     <h2>Mon profil</h2>
     <div class="form-group">
         {{ form_start(profilForm) }}<br>
