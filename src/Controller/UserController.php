@@ -25,7 +25,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/monProfil/{id}", name="monprofil", requirements={"id": "\d+"})
+     * @Route("/user/profil/{id}", name="profil", requirements={"id": "\d+"})
      */
     /*Cette fonction renvoie la page qui permet d'afficher le profil de l'utilisateur connecté afin qu'il le modifie*/
     public function afficherMonProfil($id, EntityManagerInterface $entityManager)
@@ -67,7 +67,7 @@ class UserController extends AbstractController
             $profil->setImageFile(null);
 
             $this->addFlash("success", "Votre profil a bien été modifié !");
-            return $this->redirectToRoute('monprofil', ['id' => $profil->getId()]);
+            return $this->redirectToRoute('profil', ['id' => $profil->getId()]);
         }
         return $this->render('user/modifier.html.twig', [
             "updateForm" => $updateForm->createView(),
@@ -82,9 +82,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->findbyId($id);
-
         $user->addParticipe($sortie);
-
         $em->persist($user);
         $em->flush();
         $this->addFlash('success', 'vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
@@ -100,9 +98,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->findbyId($id);
-
         $user->removeParticipe($sortie);
-
         $em->persist($user);
         $em->flush();
         $this->addFlash('danger', 'Enfoiré tu t\'es désisté à : ' . $sortie->getNom() . '!');
