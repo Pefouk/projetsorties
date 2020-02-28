@@ -69,7 +69,7 @@ class SortieRepository extends ServiceEntityRepository
             $query->setParameter('user', $participant);
         if ($form->getData()['passee'])
             $query->setParameter('ajd', $ajd);
-        return $query->getQuery()->getResult();
+        return $query->orderBy('s.dateHeureDebut','DESC')->getQuery()->getResult();
     }
 
     /*
@@ -102,6 +102,7 @@ class SortieRepository extends ServiceEntityRepository
             ->where('s.campus = :campus')
             ->andWhere('s.dateHeureDebut > :unmois')
             ->setParameters(['campus' => $campus, 'unmois' => $unmois])
+            ->orderBy('s.dateHeureDebut', 'DESC')
             ->getQuery()
             ->getResult();
     }
