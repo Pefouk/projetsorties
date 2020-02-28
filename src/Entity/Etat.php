@@ -21,7 +21,6 @@ class Etat
      */
     private $libelle;
 
-
     public function getId(): ?int
     {
         return $this->id;

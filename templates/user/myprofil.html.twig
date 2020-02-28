@@ -2,11 +2,13 @@
 {% block title %}Mon profil | {{ parent() }}{% endblock %}
 {% block main %}
 
-<img src="{{ asset('images/participant/') }}{{ profil.avatar }}">
-
-
     <h2>Mon profil</h2>
     <div class="form-group">
+        {% if profil.avatar is not null %}
+            <img src="{{ asset('images/participant/') }}{{ profil.avatar }}" height="20%">
+        {% else %}
+            <p>Pas d'image de profil</p>
+        {% endif %}
         {{ form_start(profilForm) }}<br>
         {{ form_row(profilForm.pseudo) }}<br>
         {{ form_row(profilForm.prenom) }}<br>
@@ -16,9 +18,11 @@
         {{ form_row(profilForm.motPasse) }}<br>
         {{ form_row(profilForm.campus) }}<br>
         {{ form_row(profilForm.avatar) }}<br>
-        <a class="btn btn-warning" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier mes informations</a>
+        {% if app.user == profil or is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-warning" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier les informations</a>
+        {% endif %}
         {{ form_end(profilForm) }}<br>
 
     </div>
-        {% endblock %}
+{% endblock %}
 
