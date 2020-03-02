@@ -16,13 +16,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user", name="user")
+     * @Route("/oublie/", name="MotDePasseOublié")
      */
-    public function index()
+    public function motDePasseOublie()
     {
-        return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
+        return $this->render('user/oublie.html.twig');
     }
 
     /**
@@ -186,7 +184,6 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/supprimer/{id}",name="supprimer")
      */
-
     public function supprimer(Request $request, EntityManagerInterface $em, $id)
     {
 
@@ -198,7 +195,6 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('ListeUtilisateurs');
         }
-
     }
 
     /**

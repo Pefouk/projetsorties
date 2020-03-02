@@ -85,6 +85,11 @@ class Sortie
      */
     private $lieu;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $MotifAnnulation;
+
     public function __construct()
     {
         $this->inscrit = new ArrayCollection();
@@ -244,5 +249,17 @@ class Sortie
     public function isInscrit(Participant $participant)
     {
         return ($this->inscrit->contains($participant) ? true : false);
+    }
+
+    public function getMotifAnnulation(): ?string
+    {
+        return $this->MotifAnnulation;
+    }
+
+    public function setMotifAnnulation(?string $MotifAnnulation): self
+    {
+        $this->MotifAnnulation = $MotifAnnulation;
+
+        return $this;
     }
 }

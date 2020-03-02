@@ -110,6 +110,16 @@ class Participant implements UserInterface
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $urlMdp;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $DateMdpOublie;
+
     public function __construct()
     {
         $this->participe = new ArrayCollection();
@@ -379,6 +389,30 @@ class Participant implements UserInterface
     public function setAvatar($avatar): void
     {
         $this->avatar = $avatar;
+    }
+
+    public function getUrlMdp(): ?string
+    {
+        return $this->urlMdp;
+    }
+
+    public function setUrlMdp(?string $urlMdp): self
+    {
+        $this->urlMdp = $urlMdp;
+
+        return $this;
+    }
+
+    public function getDateMdpOublie(): ?\DateTimeInterface
+    {
+        return $this->DateMdpOublie;
+    }
+
+    public function setDateMdpOublie(?\DateTimeInterface $DateMdpOublie): self
+    {
+        $this->DateMdpOublie = $DateMdpOublie;
+
+        return $this;
     }
 
 }
