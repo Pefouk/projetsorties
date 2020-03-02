@@ -42,6 +42,9 @@
                     {% endif %}
                     <td>{{ sortie.organise.prenom }} {{ sortie.organise.nom[:1]|upper }}</td>
                     <td><a href="{{ path('sorties_detail', {'id':sortie.id}) }}">afficher</a>
+                        {% if app.user == sortie.organise %}
+                        - <a href="{{ path('annulerMaSortie', {'id':sortie.id}) }}">annuler</a>
+                        {%  endif %}
                         {% if sortie.etat.libelle == 'Ouverte' or sortie.etat.libelle == 'Clôturée' %}
                         {% if sortie.isInscrit(app.user) %}
                         - <a href="{{ path('desinscrire',{'id':sortie.id}) }}">se désister</a></td>
@@ -49,7 +52,7 @@
                     - <a href="{{ path('sinscrire',{'id':sortie.id}) }}">s'inscrire</a></td>
                     {% endif %}
                 {% elseif sortie.etat.libelle == 'Créée' %}
-                    - <a href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a>
+                    - <a href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}

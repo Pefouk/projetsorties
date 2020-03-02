@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\ModifierProfilType;
@@ -199,4 +200,28 @@ class UserController extends AbstractController
         }
 
     }
+
+    /**
+     * @Route("/annulerMaSortie/{id}",name="annulerMaSortie")
+     */
+    public function annulerMaSortie($id, Request $request, EntityManagerInterface $em){
+
+        $user = $this->getUser();
+        $sortieRepo = $em->getRepository(Sortie::class);
+        $sortie = $sortieRepo->findbyId($id);
+        $etatRepo = $em->getRepository(Etat::class);
+        $etat = $etatRepo->find(6);
+
+        if ($user==$sortie->getOrganise()){
+            $sortie->setEtat($etat);
+            $em->flush($sortie);
+            $this->addFlash('success', 'Votre sortie "' . $sortie->getNom() . '" a bien été annulée !');
+        }
+
+            $referer = $request->headers->get('referer');
+            return $this->redirectToPreviousOrListe($referer);
+
+
+    }
+
 }
