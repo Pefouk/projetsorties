@@ -86,12 +86,26 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->findbyId($id);
-        $user->addParticipe($sortie);
-        $em->persist($user);
-        $em->flush();
-        $this->addFlash('success', 'vous etes inscrit à la sortie : ' . $sortie->getNom() . '!');
+        if ($user->isInscrit($sortie))
+            $this->addFlash('danger','Vous êtes déja inscrit a cette sortie !');
+        else if ($sortie->getEtat()->getLibelle() === 'Ouverte') {
+            $user->addParticipe($sortie);
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Vous vous êtes inscrit à la sortie : ' . $sortie->getNom() . '!');
+        } else {
+            $this->addFlash('danger', 'Vous ne pouvez pas vous inscrire a cette sortie car les inscriptions ne sont pas ouvertes !');
+        }
         $referer = $request->headers->get('referer');
-        return $this->redirect($referer);
+        return $this->redirectToPreviousOrListe($referer);
+    }
+
+    private function redirectToPreviousOrListe($referer)
+    {
+        if ($referer == null)
+            return $this->redirectToRoute('sorties_afficher');
+        else
+            return $this->redirect($referer);
     }
 
     /**
@@ -99,15 +113,22 @@ class UserController extends AbstractController
      */
     public function desinscrire($id, Request $request, EntityManagerInterface $em)
     {
+        $ajd = new \DateTime();
         $user = $this->getUser();
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->findbyId($id);
-        $user->removeParticipe($sortie);
-        $em->persist($user);
-        $em->flush();
-        $this->addFlash('danger', 'tu t\'es désisté à : ' . $sortie->getNom() . '!');
+        if (!$user->isInscrit($sortie))
+            $this->addFlash('danger','Vous n\'êtes pas inscrit a cette sortie !');
+        else if ($sortie->getEtat()->getLibelle() === 'Ouverte' || ($sortie->getEtat()->getLibelle() === 'Clôturée' && $ajd < $sortie->getDateLimiteInscription())) {
+            $user->removeParticipe($sortie);
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'tu t\'es désisté à : ' . $sortie->getNom() . '!');
+        } else {
+            $this->addFlash('danger', 'Vous ne pouvez pas vous desinscrire a cette sortie car la date de cloture est passée !');
+        }
         $referer = $request->headers->get('referer');
-        return $this->redirect($referer);
+        return $this->redirectToPreviousOrListe($referer);
     }
 
     /**
@@ -122,7 +143,6 @@ class UserController extends AbstractController
         return $this->render('admin/listeUtilisateurs.html.twig', [
             "liste" => $liste,
             "profil" => $user
-
         ]);
     }
 
@@ -161,7 +181,6 @@ class UserController extends AbstractController
 
         }
     }
-
 
     /**
      * @Route("/admin/supprimer/{id}",name="supprimer")

@@ -62,9 +62,9 @@
         </div>
         {% if sortie.etat.libelle == 'Ouverte' %}
             {% if sortie.isInscrit(app.user) %}
-                <a class="btn btn-primary" href="{{ path('desinscrire',{'id':sortie.id}) }}">Se desister</a></td>
+                <a class="btn btn-primary" href="{{ path('desinscrire',{'id':sortie.id}) }}">Se desister</a>
             {% else %}
-                <a class="btn btn-primary" href="{{ path('sinscrire',{'id':sortie.id}) }}">S'inscrire</a></td>
+                <a class="btn btn-primary" href="{{ path('sinscrire',{'id':sortie.id}) }}">S'inscrire</a>
         {% endif %}
         {% elseif sortie.etat.libelle == 'Créée' and (app.user == sortie.organise or is_granted('ROLE_ADMIN'))%}
             <a class="btn btn-secondary" href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a>
