@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+{% endblock %}
+
+{% block main %}
+
+<h4>Nom de la sortie : {{ sortie.nom }}</h4>
+<h4>Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</h4>
+    <h4>Site organisateur : {{ sortie.campus.nom }}</h4>
+        <h4>Lieu : {{ sortie.lieu.nom }}</h4>
+            <h4>Motif : </h4>
+    <input type="text">
+
+
+
+    <br>
+<a href="{{ path('annulerSortie', {'id':sortie.id}) }}">annuler</a>
+{% endblock %}

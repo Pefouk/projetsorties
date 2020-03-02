@@ -219,5 +219,20 @@ class UserController extends AbstractController
 
 
     }
+/**
+ * @Route("/annulerSortie/{id}",name="annulerSortie")
+ */
+public function annulerSortie($id, Request $request, EntityManagerInterface $em){
+
+    $sortieRepo = $em->getRepository(Sortie::class);
+    $sortie = $sortieRepo->find($id);
+    $user = $this->getUser();
+
+    return $this->render("sortie_afficher/annulerSortie.html.twig",[
+        "sortie"=>$sortie,
+        "user"=>$user
+    ]);
+}
+
 
 }
