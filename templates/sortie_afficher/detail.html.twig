@@ -21,6 +21,7 @@
         <div>
             <p>Nom de la sortie : {{ sortie.nom }}</p>
             <p>Etat : {{ sortie.etat.libelle }}</p>
+            <p>Organisateur : {{ sortie.organise.prenom }} {{ sortie.organise.nom|upper }}</p>
             <p>Date et heure de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
             <p>Date limite d'inscription : {{ sortie.dateLimiteInscription|date('d/m/Y H:i') }}</p>
             <p>Nombre de places : {{ sortie.inscrit.count }}/{{ sortie.nbInscriptionMax }}</p>
@@ -65,7 +66,7 @@
             {% else %}
                 <a class="btn btn-primary" href="{{ path('sinscrire',{'id':sortie.id}) }}">S'inscrire</a></td>
         {% endif %}
-        {% elseif sortie.etat.libelle == 'Créée' %}
+        {% elseif sortie.etat.libelle == 'Créée' and (app.user == sortie.organise or is_granted('ROLE_ADMIN'))%}
             <a class="btn btn-secondary" href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a>
         {% endif %}
     {% endif %}
