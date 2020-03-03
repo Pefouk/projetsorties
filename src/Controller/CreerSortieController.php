@@ -47,11 +47,11 @@ class CreerSortieController extends AbstractController
         }
 
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
-            $em->persist($lieu);
+            $em->persist($newlieu);
             $em->flush();
 
             $this->addFlash("success", "Votre lieu a bien été ajouté à la liste !");
-            return $this->redirect('/public/creer/sortie');
+            return $this->redirectToRoute('creer_sortie');
         }
 
         if($sortieForm->isSubmitted())
