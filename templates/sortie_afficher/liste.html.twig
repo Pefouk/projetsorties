@@ -85,7 +85,11 @@
                                 <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                                 <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
                                 <td>{{ sortie.inscrit.count }}/{{ sortie.nbInscriptionMax }}</td>
-                                <td>{{ sortie.etat.libelle }}</td>
+                                {% if sortie.etat.id == 6 %}
+                                <td style="background-color: #AA3333">{{ sortie.etat.libelle }}</td>
+                                    {% else %}
+                                        <td style="background-color:#1ea471">{{ sortie.etat.libelle }}</td>
+                                {% endif %}
                                 {% if sortie.isInscrit(app.user) %}
                                     <td>X</td>
                                 {% else %}
@@ -93,7 +97,7 @@
                                 {% endif %}
                                 <td>{{ sortie.organise.prenom }} {{ sortie.organise.nom[:1]|upper }}</td>
                                 <td><a href="{{ path('sorties_detail', {'id':sortie.id}) }}">afficher</a>
-                                    {% if app.user == sortie.organise %}
+                                    {% if (app.user == sortie.organise or app.user.administrateur == 1) and sortie.etat.id != 6 %}
                                         - <a href="{{ path('annulerMaSortie',{'id':sortie.id}) }}">annuler</a>
                                     {% endif %}
                                     {% if sortie.etat.libelle == 'Ouverte' or sortie.etat.libelle == 'Clôturée' %}

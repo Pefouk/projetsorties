@@ -17,8 +17,9 @@
 
     {{ form_start(motifForm) }}
     {{ form_widget(motifForm) }}
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>  <a href="{{ path('sorties_afficher') }}">Annuler</a>
     {{ form_end(motifForm) }}
+
 
 
 {#    <form method="post" action="{{ path('annulerSortie', {'id':sortie.id}) }}">#}

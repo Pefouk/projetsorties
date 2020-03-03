@@ -35,9 +35,9 @@
                     <td>non</td>
                 {% endif %}
                 {% if participant.actif %}
-                    <td>actif</td>
+                    <td style="background-color: #3c763d">actif</td>
                 {% else %}
-                    <td>Inactif</td>
+                    <td style="background-color: #AA3333">Inactif</td>
                 {% endif %}
                 <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%" width="20%"></td>
                 {% if participant.actif %}
