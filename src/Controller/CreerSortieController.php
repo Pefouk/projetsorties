@@ -12,6 +12,7 @@ use App\Form\LieuType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreerSortieController extends AbstractController
@@ -31,6 +32,9 @@ class CreerSortieController extends AbstractController
         $etat = $etatRep->find(1);
         $sortie->setEtat($etat);
         $organisateur = $this->getUser();
+
+
+
         if($organisateur instanceof Participant)
         {
             $sortie->setOrganise($organisateur);
@@ -41,8 +45,15 @@ class CreerSortieController extends AbstractController
             $lieuForm = $this->createForm(LieuType::class, $newlieu);
 
             $sortieForm->handleRequest($request);
+            $lieuForm->handleRequest($request);
         }
 
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+            $em->persist($lieu);
+            $em->flush();
+
+            return new Response('Lieu créé');
+        }
 
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
@@ -54,7 +65,11 @@ class CreerSortieController extends AbstractController
         }
         return $this->render('sortie/creersortie.html.twig', [
             "sortieForm"=>$sortieForm->createView(),
+            "lieuForm"=>$lieuForm->createView(),
             "lieux"=> $lieux,
         ]);
     }
+
+
+
 }
