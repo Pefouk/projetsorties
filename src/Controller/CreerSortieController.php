@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
@@ -12,7 +11,6 @@ use App\Form\LieuType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreerSortieController extends AbstractController
@@ -52,10 +50,11 @@ class CreerSortieController extends AbstractController
             $em->persist($lieu);
             $em->flush();
 
-            return new Response('Lieu créé');
+            $this->addFlash("success", "Votre lieu a bien été ajouté à la liste !");
+            return $this->redirect('/public/creer/sortie');
         }
 
-        if($sortieForm->isSubmitted() && $sortieForm->isValid())
+        if($sortieForm->isSubmitted())
         {
             $em->persist($sortie);
             $em->flush();
