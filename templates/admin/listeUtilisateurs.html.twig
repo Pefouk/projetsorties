@@ -39,7 +39,7 @@
                 {% else %}
                     <td>Inactif</td>
                 {% endif %}
-                <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"></td>
+                <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%" width="20%"></td>
                 {% if participant.actif %}
                     <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a> <a
                                 href="{{ path('desactiver', {'id': participant.id}) }}">desactiver</a></td>

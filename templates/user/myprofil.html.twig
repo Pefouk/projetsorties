@@ -1,27 +1,35 @@
 {% extends 'base.html.twig' %}
 {% block title %}Mon profil | {{ parent() }}{% endblock %}
 {% block main %}
+    <div class="row" id="profil">
 
-    <h2>Mon profil</h2>
-    <div class="form-group">
-        {% if profil.avatar is not null %}
-            <img src="{{ asset('images/participant/') }}{{ profil.avatar }}" width="20%">
-        {% else %}
-            <p>Pas d'image de profil</p>
-        {% endif %}
-        {{ form_start(profilForm) }}<br>
-        {{ form_row(profilForm.pseudo) }}<br>
-        {{ form_row(profilForm.prenom) }}<br>
-        {{ form_row(profilForm.nom) }}<br>
-        {{ form_row(profilForm.telephone) }}<br>
-        {{ form_row(profilForm.mail) }}<br>
-        {{ form_row(profilForm.motPasse) }}<br>
-        {{ form_row(profilForm.campus) }}<br>
-        {{ form_row(profilForm.avatar) }}<br>
-        {% if app.user == profil or is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-warning" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier les informations</a>
-        {% endif %}
-        {{ form_end(profilForm) }}<br>
+        <div class="col-sm-12"><h2>Mon profil</h2></div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                {% if profil.avatar is not null %}
+                    <div style="text-align: center;"><img src="{{ asset('images/participant/') }}{{ profil.avatar }}" width="20%"></div>
+                {% else %}
+                    <p>Pas d'image de profil</p>
+                {% endif %}
+                {{ form_start(profilForm) }}<br>
+                {{ form_row(profilForm.pseudo) }}<br>
+                {{ form_row(profilForm.prenom) }}<br>
+                {{ form_row(profilForm.nom) }}<br>
+                {{ form_row(profilForm.telephone) }}<br>
+                {{ form_row(profilForm.mail) }}<br>
+                {{ form_row(profilForm.motPasse) }}<br>
+                {{ form_row(profilForm.campus) }}<br>
+                {{ form_row(profilForm.avatar) }}<br>
+                {% if app.user == profil or is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-secondary" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier les informations</a>
+                {% endif %}
+                {{ form_end(profilForm) }}<br>
+
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+
 
     </div>
 {% endblock %}
