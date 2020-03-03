@@ -15,14 +15,14 @@
         {{ form_row(profilForm.nom) }}<br>
         {{ form_row(profilForm.telephone) }}<br>
         {{ form_row(profilForm.mail) }}<br>
-        {{ form_row(profilForm.motPasse) }}<br>
         {{ form_row(profilForm.campus) }}<br>
-        {{ form_row(profilForm.avatar) }}<br>
         {% if app.user == profil or is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-warning" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier les informations</a>
+            <a class="btn btn-warning" href="{{ path('modifierProfil', {'id': app.user.id}) }}">Modifier les
+                informations</a>
         {% endif %}
-        {{ form_end(profilForm) }}<br>
-
+        {% if app.user == profil %}
+            <a class="btn btn-secondary" href="{{ path('changerMDP') }}">Changer de mot de passe</a>
+        {% endif %}
     </div>
 {% endblock %}
 

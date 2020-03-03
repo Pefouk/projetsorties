@@ -13,6 +13,7 @@ use Exception;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,6 +58,68 @@ class UserController extends AbstractController
             );
         $mailer->send($message);
     }
+
+    /**
+     * @Route("/oublie/{id}", name="lienMail")
+     * @param $id
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse|Response
+     * @throws Exception
+     */
+    public function lienMail($id, Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
+    {
+        $ajd = new \DateTime();
+        $ajd->add(date_interval_create_from_date_string('1 hour'));
+        $user = $this->getDoctrine()->getRepository(Participant::class)->findBy(['urlMdp' => $id]);
+        if (count($user) === 1 && $user[0]->getDateMdpOublie() < $ajd)
+            return $this->changerMotDePasse($user[0], $request, $encoder, $entityManager);
+        else {
+            throw $this->createAccessDeniedException();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param EntityManagerInterface $entityManager
+     * @Route("/user/changermdp", name="changerMDP")
+     * @return RedirectResponse|Response
+     */
+    public function changerMotDePasseConnecte(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+        if ($user instanceof Participant)
+            return $this->changerMotDePasse($user, $request, $encoder, $entityManager);
+        else
+            throw $this->createAccessDeniedException();
+    }
+
+    private function changerMotDePasse(Participant $participant, Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
+    {
+        $form = $this->createForm('App\Form\ChangerMotDePasseType');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hash = $encoder->encodePassword($participant, $form->get('motPasse')->getData());
+            $participant->setMotPasse($hash);
+            $participant->setUrlMdp(null);
+            $entityManager->persist($participant);
+            $entityManager->flush();
+            $this->addFlash('success', 'Mot de passe modifé avec succes.');
+            return $this->redirectToRoute('sorties_afficher');
+        }
+        return $this->render('user/changerMDP.html.twig', ['form' => $form->createView(), 'participant' => $participant]);
+    }
+
+    private function redirectToPreviousOrListe($referer)
+    {
+        if ($referer == null)
+            return $this->redirectToRoute('sorties_afficher');
+        else
+            return $this->redirect($referer);
+    }
+
     /**
      * @Route("/user/profil/{id}", name="profil", requirements={"id": "\d+"})
      */
@@ -73,6 +136,8 @@ class UserController extends AbstractController
             "profil" => $profil
         ]);
     }
+
+
 
     /**
      * @Route("/user/modifierProfil/{id}", name="modifierProfil", requirements={"id": "\d+"})
@@ -131,14 +196,6 @@ class UserController extends AbstractController
         }
         $referer = $request->headers->get('referer');
         return $this->redirectToPreviousOrListe($referer);
-    }
-
-    private function redirectToPreviousOrListe($referer)
-    {
-        if ($referer == null)
-            return $this->redirectToRoute('sorties_afficher');
-        else
-            return $this->redirect($referer);
     }
 
     /**
