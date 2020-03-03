@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+{% endblock %}
+
+{% block main %}
+
+    <br><h4 style="text-align: center">Nom de la sortie : {{ sortie.nom }}</h4><br>
+<h4 style="text-align: center">Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</h4><br>
+    <h4 style="text-align: center">Site organisateur : {{ sortie.campus.nom }}</h4><br>
+    <h4 style="text-align: center">Lieu : {{ sortie.lieu.nom }}</h4><br>
+
+
+    {{ form_start(motifForm) }}
+    {{ form_widget(motifForm) }}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(motifForm) }}
+
+
+{#    <form method="post" action="{{ path('annulerSortie', {'id':sortie.id}) }}">#}
+{#        <label for="motif" >Motif :</label>#}
+
+{#            <input type="text" id="motif" name="motif" required size="10"><br>#}
+
+{#<a href="{{ path('annulerSortie', {'id':sortie.id}) }}">enregistrer</a>#}
+{#        <input type="submit">#}
+
+{#    </form>#}
+{% endblock %}
