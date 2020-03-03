@@ -7,6 +7,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\ModifierProfilType;
 use App\Form\MotDePasseOublieType;
+use App\Form\MotifAnnulationType;
 use App\Form\ProfilType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -232,42 +233,46 @@ class UserController extends AbstractController
         }
     }
 
+
+
     /**
      * @Route("/annulerMaSortie/{id}",name="annulerMaSortie")
      */
-    public function annulerMaSortie($id, Request $request, EntityManagerInterface $em){
+    public function annulerMaSortie($id, Request $request, EntityManagerInterface $em)
+    {
 
-        $user = $this->getUser();
+
+        $motifForm = $this->createForm(MotifAnnulationType::class);
+        $motifForm->handleRequest($request);
         $sortieRepo = $em->getRepository(Sortie::class);
         $sortie = $sortieRepo->findbyId($id);
+        $user = $this->getUser();
         $etatRepo = $em->getRepository(Etat::class);
         $etat = $etatRepo->find(6);
+        $motif = $motifForm->get('MotifAnnulation')->getData();
+        $sortie->setMotifAnnulation($motif);
 
-        if ($user==$sortie->getOrganise()){
-            $sortie->setEtat($etat);
+
+        $sortie->setEtat($etat);
+//
+        if ($motifForm->isSubmitted() && $motifForm->isValid() && $user == $sortie->getOrganise()) {
+
             $em->flush($sortie);
             $this->addFlash('success', 'Votre sortie "' . $sortie->getNom() . '" a bien été annulée !');
+            return $this->redirectToRoute('sorties_afficher');
+
         }
 
-            $referer = $request->headers->get('referer');
-            return $this->redirectToPreviousOrListe($referer);
+            return $this->render('sortie_afficher/annulerSortie.html.twig', [
+                "motifForm" => $motifForm->createView(),
+                "sortie" => $sortie
+            ]);
 
 
-    }
-/**
- * @Route("/annulerSortie/{id}",name="annulerSortie")
- */
-public function annulerSortie($id, Request $request, EntityManagerInterface $em){
 
-    $sortieRepo = $em->getRepository(Sortie::class);
-    $sortie = $sortieRepo->find($id);
-    $user = $this->getUser();
-
-    return $this->render("sortie_afficher/annulerSortie.html.twig",[
-        "sortie"=>$sortie,
-        "user"=>$user
-    ]);
-}
+        }
 
 
 }
+
+
