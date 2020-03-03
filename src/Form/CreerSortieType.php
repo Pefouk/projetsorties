@@ -21,7 +21,8 @@ class CreerSortieType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class,
-                ['label'=>'Nom de la sortie :'])
+                ['label'=>'Nom de la sortie :',
+                    'required'=>false])
             ->add('dateHeureDebut', DateTimeType::class,
                 ['label'=>'Date et heure de la sortie :'])
             ->add('duree', TimeType::class,
@@ -29,14 +30,17 @@ class CreerSortieType extends AbstractType
             ->add('dateLimiteInscription', DateType::class,
                 ['label'=>'Date limite d\'inscription :'])
             ->add('nbInscriptionMax', IntegerType::class,
-                ['label'=>'Nombre de places :'])
+                ['label'=>'Nombre de places :',
+                    'required'=>false])
             ->add('infosSortie', TextareaType::class,
-                ['label'=>'Description et infos :'])
+                ['label'=>'Description et infos :',
+                    'required'=>false])
             ->add('lieu', EntityType::class,
                 [   'class'=> Lieu::class,
                     'label'=>'Lieu :',
                     "choice_label"=> 'nom',
                     'placeholder'=> '',
+                    'required'=>false,
                     'attr'=>['class'=>'form-control',
                         'onchange'=>'afficherDetails(this)']])
 

@@ -49,6 +49,7 @@ class FiltrerSortiesType extends AbstractType
                 'label' => 'Sorties passées'
             ])->add('Rechercher', SubmitType::class, [
                 'validate' => true,
+                'attr'=>['class'=>'btn btn-secondary btn-lg']
             ]);
     }
 
