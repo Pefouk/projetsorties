@@ -82,22 +82,6 @@ class UserController extends AbstractController
         }
     }
 
-    /**
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @param EntityManagerInterface $entityManager
-     * @Route("/user/changermdp", name="changerMDP")
-     * @return RedirectResponse|Response
-     */
-    public function changerMotDePasseConnecte(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
-    {
-        $user = $this->getUser();
-        if ($user instanceof Participant)
-            return $this->changerMotDePasse($user, $request, $encoder, $entityManager);
-        else
-            throw $this->createAccessDeniedException();
-    }
-
     private function changerMotDePasse(Participant $participant, Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
     {
         $form = $this->createForm('App\Form\ChangerMotDePasseType');
@@ -114,18 +98,28 @@ class UserController extends AbstractController
         return $this->render('user/changerMDP.html.twig', ['form' => $form->createView(), 'participant' => $participant]);
     }
 
-    private function redirectToPreviousOrListe($referer)
+    /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param EntityManagerInterface $entityManager
+     * @Route("/user/changermdp", name="changerMDP")
+     * @return RedirectResponse|Response
+     */
+    public function changerMotDePasseConnecte(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
     {
-        if ($referer == null)
-            return $this->redirectToRoute('sorties_afficher');
+        $user = $this->getUser();
+        if ($user instanceof Participant)
+            return $this->changerMotDePasse($user, $request, $encoder, $entityManager);
         else
-            return $this->redirect($referer);
+            throw $this->createAccessDeniedException();
     }
 
     /**
      * @Route("/user/profil/{id}", name="profil", requirements={"id": "\d+"})
+     * @param $id
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
-    /*Cette fonction renvoie la page qui permet d'afficher le profil de l'utilisateur connecté afin qu'il le modifie*/
     public function afficherMonProfil($id, EntityManagerInterface $entityManager)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -139,12 +133,14 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/user/modifierProfil/{id}", name="modifierProfil", requirements={"id": "\d+"})
+     * @param $id
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @return RedirectResponse|Response
+     * @throws Exception
      */
-    /*Cette fonction permet à l'utilisateur de modifier son profil*/
     public function modifierProfil($id, Request $request, UserPasswordEncoderInterface $encoder)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
@@ -156,20 +152,10 @@ class UserController extends AbstractController
         $profil = $em->getRepository(Participant::class)->find($id);
         $updateForm = $this->createForm(ModifierProfilType::class, $profil);
         $updateForm->handleRequest($request);
-
-//        if ($updateForm->isValid()) {
-//            dd('1');
-//        } else {
-//            dd($updateForm->getErrors(true));
-//        }
         if ($updateForm->isSubmitted() && $updateForm->isValid()) {
-//            $hashed = $encoder->encodePassword($profil, $profil->getPassword());
-//            $profil->setMotPasse($hashed);
-
             $em->persist($profil);
             $em->flush();
             $profil->setImageFile(null);
-
             $this->addFlash("success", "Votre profil a bien été modifié !");
             return $this->redirectToRoute('profil', ['id' => $profil->getId()]);
         }
@@ -180,6 +166,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/sinscrire/{id}",name="sinscrire")
+     * @param $id
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse
      */
     public function sinscrire($id, Request $request, EntityManagerInterface $em)
     {
@@ -200,8 +190,21 @@ class UserController extends AbstractController
         return $this->redirectToPreviousOrListe($referer);
     }
 
+    private function redirectToPreviousOrListe($referer)
+    {
+        if ($referer == null)
+            return $this->redirectToRoute('sorties_afficher');
+        else
+            return $this->redirect($referer);
+    }
+
     /**
      * @Route("/desinscrire/{id}",name="desinscrire")
+     * @param $id
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function desinscrire($id, Request $request, EntityManagerInterface $em)
     {
@@ -224,81 +227,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/admin/ListeUtilisateurs",name="ListeUtilisateurs")
-     */
-
-    public function listerUtilisateurs(Request $request, EntityManagerInterface $em)
-    {
-        $user = $this->getUser();
-        $utilisateursRepo = $em->getRepository(Participant::class);
-        $liste = $utilisateursRepo->findAll();
-        return $this->render('admin/listeUtilisateurs.html.twig', [
-            "liste" => $liste,
-            "profil" => $user
-        ]);
-    }
-
-    /**
-     * @Route("/admin/desactiver/{id}",name="desactiver")
-     */
-
-    public function desactiver(Request $request, EntityManagerInterface $em, $id)
-    {
-
-        $entity = $em->getRepository(Participant::class)->find($id);
-
-        if ($entity != null) {
-            $entity->setActif(0);
-            $em->flush();
-            return $this->redirectToRoute('ListeUtilisateurs');
-
-
-        }
-    }
-
-    /**
-     * @Route("/admin/activer/{id}",name="activer")
-     */
-
-    public function activer(Request $request, EntityManagerInterface $em, $id)
-    {
-
-        $entity = $em->getRepository(Participant::class)->find($id);
-
-        if ($entity != null) {
-            $entity->setActif(1);
-            $em->flush();
-            return $this->redirectToRoute('ListeUtilisateurs');
-
-
-        }
-    }
-
-    /**
-     * @Route("/admin/supprimer/{id}",name="supprimer")
-     */
-    public function supprimer(Request $request, EntityManagerInterface $em, $id)
-    {
-
-        $entity = $em->getRepository(Participant::class)->find($id);
-
-        if ($entity != null) {
-            $em->remove($entity);
-            $em->flush();
-
-            return $this->redirectToRoute('ListeUtilisateurs');
-        }
-    }
-
-
-
-    /**
      * @Route("/annulerMaSortie/{id}",name="annulerMaSortie")
+     * @param $id
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse|Response
      */
     public function annulerMaSortie($id, Request $request, EntityManagerInterface $em)
     {
-
-
         $motifForm = $this->createForm(MotifAnnulationType::class);
         $motifForm->handleRequest($request);
         $sortieRepo = $em->getRepository(Sortie::class);
@@ -308,28 +244,17 @@ class UserController extends AbstractController
         $etat = $etatRepo->find(6);
         $motif = $motifForm->get('MotifAnnulation')->getData();
         $sortie->setMotifAnnulation($motif);
-
-
         $sortie->setEtat($etat);
-//
         if ($motifForm->isSubmitted() && $motifForm->isValid() && $user == $sortie->getOrganise()) {
-
             $em->flush($sortie);
             $this->addFlash('success', 'Votre sortie "' . $sortie->getNom() . '" a bien été annulée !');
             return $this->redirectToRoute('sorties_afficher');
-
         }
-
-            return $this->render('sortie_afficher/annulerSortie.html.twig', [
-                "motifForm" => $motifForm->createView(),
-                "sortie" => $sortie
-            ]);
-
-
-
-        }
-
-
+        return $this->render('sortie_afficher/annulerSortie.html.twig', [
+            "motifForm" => $motifForm->createView(),
+            "sortie" => $sortie
+        ]);
+    }
 }
 
 

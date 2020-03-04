@@ -4,12 +4,9 @@ namespace App\Form;
 
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,57 +16,44 @@ class ProfilType extends AbstractType
     {
         $builder
             ->add('pseudo', TextType::class, [
-                'label'=>'Pseudo :',
-                'attr'=> array(
-                    'readonly'=> true,
+                'label' => 'Pseudo :',
+                'attr' => array(
+                    'readonly' => true,
                 )
             ])
             ->add('prenom', TextType::class, [
-                'label'=>'Prénom :',
-                'attr'=> array(
-                    'readonly'=> true,
+                'label' => 'Prénom :',
+                'attr' => array(
+                    'readonly' => true,
                 )
             ])
             ->add('nom', TextType::class, [
-                'label'=>'Nom :',
-                'attr'=> array(
-                    'readonly'=> true,
+                'label' => 'Nom :',
+                'attr' => array(
+                    'readonly' => true,
                 )
             ])
             ->add('telephone', TelType::class, [
-                'label'=>'Téléphone :',
-                'attr'=> array(
-                    'readonly'=> true,
+                'label' => 'Téléphone :',
+                'attr' => array(
+                    'readonly' => true,
                 )
             ])
             ->add('mail', EmailType::class, [
-                'label'=>'Email :',
-                'attr'=> array(
-                    'readonly'=> true,
+                'label' => 'Email :',
+                'attr' => array(
+                    'readonly' => true,
                 )
             ])
-            ->add('motPasse', PasswordType::class, [
-                'required'=>true,
-                'label'=>'Mot de passe :',
-                'attr'=>['class'=>'password-field',
-                    'readonly'=>true]
-                    ])
             ->add('campus', null,
                 [
-                    'label'=>'Campus',
-                    'choice_label'=>'nom',
-                    'attr'=> array(
-                        'readonly'=> true,
+                    'disabled' => true,
+                    'label' => 'Campus',
+                    'choice_label' => 'nom',
+                    'attr' => array(
+                        'readonly' => true,
                     )
-                ])
-            ->add('avatar', FileType::class, [
-                'label'=>'Ma photo :',
-                'mapped' => false,
-                'attr'=> array(
-                    'readonly'=> true,
-                )
-            ])
-        ;
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

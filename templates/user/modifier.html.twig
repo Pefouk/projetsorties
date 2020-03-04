@@ -4,7 +4,6 @@
     <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
     <div class="row" id="profil">
         <div class="col-sm-12"><h2>Modifier mon profil</h2></div>
-        <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <div class="form-group">
                 {{ form_start(updateForm) }}<br>
@@ -17,6 +16,7 @@
                 {{ form_row(updateForm.imageFile) }}<br>
                 <button type="submit" class="btn btn-secondary">Enregistrer</button>
                 <a class="btn btn-secondary" href="{{ path('changerMDP') }}">Changer de mot de passe</a>
+                {{ form_end(updateForm) }}
             </div>
         </div>
         <div class="col-sm-3"></div>

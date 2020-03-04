@@ -7,6 +7,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Etat;
 use App\Entity\Ville;
+use App\Exception\SortieException;
 use App\Form\CreerSortieType;
 use App\Form\LieuType;
 use App\Form\VilleType;
@@ -65,7 +66,13 @@ class CreerSortieController extends AbstractController
                     $this->addFlash("success", "Votre sortie a bien été publiée !");
                     return $this->redirectToRoute('sorties_afficher');
                 }
-            }
+            }try {
+            $em->persist($sortie);
+            $em->flush();
+            $this->addFlash("success", "Votre sortie a bien été créée.");
+        } catch (SortieException $e) {
+            $this->addFlash("danger", $e->getMessage());
+        }
 
             $lieuForm->handleRequest($request);
             $villeForm->handleRequest($request);
