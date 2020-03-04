@@ -87,8 +87,10 @@
                                 <td>{{ sortie.inscrit.count }}/{{ sortie.nbInscriptionMax }}</td>
                                 {% if sortie.etat.id == 6 %}
                                 <td style="background-color: #AA3333">{{ sortie.etat.libelle }}</td>
-                                    {% else %}
+                                    {% elseif sortie.etat.id == 2 %}
                                         <td style="background-color:#1ea471">{{ sortie.etat.libelle }}</td>
+                                    {% else %}
+                                        <td style="background-color:#6c757d">{{ sortie.etat.libelle }}</td>
                                 {% endif %}
                                 {% if sortie.isInscrit(app.user) %}
                                     <td>X</td>
