@@ -34,14 +34,6 @@ class ModifierProfilType extends AbstractType
             ->add('mail', EmailType::class, [
                 'label' => 'Email :'
             ])
-            ->add('motPasse', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'Les mots de passe doivent être similaires.',
-                'required' => false,
-                'mapped' => false,
-                'options' => ['attr' => ['class' => 'password-field']],
-                'first_options' => array('label' => 'Mot de passe :'),
-                'second_options' => array('label' => 'Confirmation :')])
             ->add('campus', null,
                 [
                     'label' => 'Campus',

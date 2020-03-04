@@ -50,11 +50,11 @@ class DoctrineEvents implements EventSubscriber
     {
         $ajd = new DateTime();
 
-        if ($sortie->getEtat()->getLibelle() !== 'Annulée') {
-            if ($sortie->getEtat()->getLibelle() === 'Ouverte' && ($sortie->getNbInscriptionMax() === count($sortie->getInscrit()) || $sortie->getDateLimiteInscription() < $ajd)) {
+        if ($sortie->getEtat()->getId() !== 6) {
+            if ($sortie->getEtat()->getId() === 2 && ($sortie->getNbInscriptionMax() === count($sortie->getInscrit()) || $sortie->getDateLimiteInscription() < $ajd)) {
                 $sortie->setEtat($this->etat[2]);
             }
-            else if ($sortie->getEtat()->getLibelle() === 'Clôturée' && $sortie->getNbInscriptionMax() > count($sortie->getInscrit()) && $sortie->getDateLimiteInscription() >= $ajd) {
+            else if ($sortie->getEtat()->getId() === 3 && $sortie->getNbInscriptionMax() > count($sortie->getInscrit()) && $sortie->getDateLimiteInscription() >= $ajd) {
                 $sortie->setEtat($this->etat[1]);
             }
             if ($sortie->getDateHeureDebut() <= $ajd && $sortie->getDateHeureDebut()->getTimestamp() + $sortie->getDuree()->getTimestamp() >= $ajd->getTimestamp())
