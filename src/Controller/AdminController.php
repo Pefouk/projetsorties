@@ -88,7 +88,15 @@ class AdminController extends AbstractController
     public function supprimer(Request $request, EntityManagerInterface $em, $id)
     {
 
+
         $entity = $em->getRepository(Participant::class)->find($id);
+        $listSortie = $entity->getParticipe();
+
+        foreach ($listSortie as $uneSortie){
+        if($entity->isInscrit($uneSortie))
+        $uneSortie->removeInscrit($entity);
+        }
+
 
         if ($entity != null) {
             $em->remove($entity);
