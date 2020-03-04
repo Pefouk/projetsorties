@@ -134,4 +134,31 @@ class AdminController extends AbstractController
                 "registerForm" => $registerForm->createView(),
             ]);
     }
+
+    /**
+     * @Route("/passerAdmin/{id}",name="passerAdmin")
+     */
+    public function passerAdmin($id,Request $request, EntityManagerInterface $em){
+        $user = $em->getRepository(Participant::class)->find($id);
+        $user->setAdministrateur(1);
+        $em->flush();
+        $this->addFlash("success", "l'utilisateur a maintenant les droits d'administrateur.");
+        return $this->redirectToRoute('admin_ListeUtilisateurs');
+
+    }
+
+    /**
+     * @Route("/annulerAdmin{id}",name="annulerAdmin")
+     */
+    public function annulerAdmin($id,Request $request, EntityManagerInterface $em){
+        $user = $em->getRepository(Participant::class)->find($id);
+
+        $user->setAdministrateur(0);
+        $em->flush();
+        $this->addFlash("success", "l'utilisateur n'a plus les droits d'administrateur.");
+        return $this->redirectToRoute('admin_ListeUtilisateurs');
+
+    }
 }
+
+
