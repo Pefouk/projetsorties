@@ -124,7 +124,6 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
 
-        dump($this->getUser()->getRoles());
         $profil = $entityManager->getRepository(Participant::class)->find($id);
         $profilForm = $this->createForm(ProfilType::class, $profil);
         return $this->render('user/myprofil.html.twig', [
