@@ -245,6 +245,17 @@ class UserController extends AbstractController
         $motif = $motifForm->get('MotifAnnulation')->getData();
         $sortie->setMotifAnnulation($motif);
         $sortie->setEtat($etat);
+
+        $listInscrit = $sortie->getInscrit();
+
+        foreach ($listInscrit as $sortieinscrit){
+            if ($sortieinscrit->isInscrit($sortie)){
+                $sortie->removeInscrit($sortieinscrit);
+            }
+         }
+
+
+
         if ($motifForm->isSubmitted() && $motifForm->isValid() && $user == $sortie->getOrganise()) {
             $em->flush($sortie);
             $this->addFlash('success', 'Votre sortie "' . $sortie->getNom() . '" a bien été annulée !');
