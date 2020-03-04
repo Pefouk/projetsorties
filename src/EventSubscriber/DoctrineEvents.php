@@ -30,11 +30,18 @@ class DoctrineEvents implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::postLoad
+            Events::postLoad,
+            Events::postPersist
         ];
     }
 
-    public function postLoad(LifecycleEventArgs $lifecycleEventArgs)
+    public function postPersist(LifecycleEventArgs $lifecycleEventArgs)
+    {
+        $entity = $lifecycleEventArgs->getEntity();
+
+        dump($entity);
+    }
+        public function postLoad(LifecycleEventArgs $lifecycleEventArgs)
     {
         $entity = $lifecycleEventArgs->getEntity();
 

@@ -41,18 +41,15 @@
                 {% endif %}
                 <td><img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%" width="20%"></td>
                 {% if participant.actif %}
-                    <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a> <a
-                                href="{{ path('desactiver', {'id': participant.id}) }}">desactiver</a></td>
+                    <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">supprimer</a> <a
+                                href="{{ path('admin_desactiver', {'id': participant.id}) }}">desactiver</a></td>
                 {% else %}
-                    <td><a href="{{ path('supprimer', {'id': participant.id}) }}">supprimer</a>
-                        <a href="{{ path('activer', {'id': participant.id}) }}">activer</a></td>
-
+                    <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">supprimer</a>
+                        <a href="{{ path('admin_activer', {'id': participant.id}) }}">activer</a></td>
                 {% endif %}
-
-
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    <a href="{{ path('admin_creerCompte') }}" class="btn btn-primary">Créer un compte</a>
 {% endblock %}
