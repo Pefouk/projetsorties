@@ -6,11 +6,14 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Etat;
+use App\Entity\Ville;
 use App\Form\CreerSortieType;
 use App\Form\LieuType;
+use App\Form\VilleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreerSortieController extends AbstractController
@@ -24,26 +27,48 @@ class CreerSortieController extends AbstractController
 
         $sortie = new Sortie();
         $newlieu = new Lieu();
+        $newVille = new Ville();
         $lieu = $em->getRepository(Lieu::class);
         $sortie->getLieu($lieu);
         $etatRep = $this->getDoctrine()->getRepository(Etat::class);
-        $etat = $etatRep->find(1);
-        $sortie->setEtat($etat);
+
         $organisateur = $this->getUser();
+        $sortie->setOrganise($organisateur);
+        $sortie->setCampus($organisateur->getCampus());
+        $lieuRepo = $this->getDoctrine()->getRepository(Lieu::class);
+        $lieux = $lieuRepo->findBy([]);
 
+        $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
+        $lieuForm = $this->createForm(LieuType::class, $newlieu);
+        $villeForm = $this->createForm(VilleType::class, $newVille);
 
+        $sortieForm->handleRequest($request);
 
         if($organisateur instanceof Participant)
         {
-            $sortie->setOrganise($organisateur);
-            $sortie->setCampus($organisateur->getCampus());
-            $lieuRepo = $this->getDoctrine()->getRepository(Lieu::class);
-            $lieux = $lieuRepo->findBy([]);
-            $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
-            $lieuForm = $this->createForm(LieuType::class, $newlieu);
+            if($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+                if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrer')) {
+                    $etat = $etatRep->find(1);
+                    $sortie->setEtat($etat);
 
-            $sortieForm->handleRequest($request);
+                    $em->persist($sortie);
+                    $em->flush();
+                    $this->addFlash("success", "Votre sortie a bien été créée !");
+                    return $this->redirectToRoute('sorties_afficher');
+                }
+                if ($sortieForm->getClickedButton() === $sortieForm->get('publier')) {
+                    $etat = $etatRep->find(2);
+                    $sortie->setEtat($etat);
+
+                    $em->persist($sortie);
+                    $em->flush();
+                    $this->addFlash("success", "Votre sortie a bien été publiée !");
+                    return $this->redirectToRoute('sorties_afficher');
+                }
+            }
+
             $lieuForm->handleRequest($request);
+            $villeForm->handleRequest($request);
         }
 
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
@@ -54,19 +79,29 @@ class CreerSortieController extends AbstractController
             return $this->redirectToRoute('creer_sortie');
         }
 
-        if($sortieForm->isSubmitted())
+        if($villeForm->isSubmitted())
         {
-            $em->persist($sortie);
+            $em->persist($newVille);
             $em->flush();
 
-            $this->addFlash("success", "Votre sortie a bien été créée.");
-
+            $this->addFlash("success","Ville ajoutée !");
         }
         return $this->render('sortie/creersortie.html.twig', [
             "sortieForm"=>$sortieForm->createView(),
             "lieuForm"=>$lieuForm->createView(),
+            "villeForm"=>$villeForm->createView(),
             "lieux"=> $lieux,
         ]);
+    }
+
+    /**
+     * @Route("/creer/publier/sortie", name="publiermtnsortie")
+     */
+
+    public function publierSortie(Request $request, EntityManagerInterface $entityManager)
+    {
+
+
     }
 
 

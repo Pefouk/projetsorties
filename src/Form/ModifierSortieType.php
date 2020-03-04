@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Sortie;
 use App\Entity\Lieu;
+use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CreerSortieType extends AbstractType
+class ModifierSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -27,7 +27,7 @@ class CreerSortieType extends AbstractType
             ->add('dateHeureDebut', DateTimeType::class,
                 ['label'=>'Date et heure de la sortie :'])
             ->add('duree', TimeType::class,
-                ['label'=>'Durée :'])
+                ['label'=>'DurĂ©e :'])
             ->add('dateLimiteInscription', DateType::class,
                 ['label'=>'Date limite d\'inscription :'])
             ->add('nbInscriptionMax', IntegerType::class,
@@ -48,14 +48,14 @@ class CreerSortieType extends AbstractType
                 'label'=>'Enregistrer',
                 'attr'=>[
                     'class'=>'btn btn-secondary btn-lg'
-                    ]
+                ]
             ])
             ->add('publier', SubmitType::class, [
                 'label'=>'Publier une sortie',
                 'attr'=>[
-                'value'=>'Publier',
+                    'value'=>'Publier',
                     'class'=> 'btn btn-secondary btn-lg'
-    ]
+                ]
             ]);
     }
 

@@ -111,3 +111,14 @@ header .alert
 {
     margin-top: 20px;
 }
+
+table
+{
+    max-width: 100%;
+}
+
+.flash
+{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
