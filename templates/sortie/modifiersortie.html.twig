@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une sortie | {{ parent() }}{% endblock %}
+
+{% block main %}
+    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
+    <div class="row">
+        <div class="col-sm-12"><h2 style="padding-top: 50px">Modifier une sortie</h2>
+        </div>
+        <div class="col-sm-1"></div>
+        {#Déclaration du formulaire de modification d'une sortie sur 2 colonnes#}
+        <div class="col-sm-5 form-group">
+            {{ form_start(updateForm) }}
+            {{ form_row(updateForm.nom) }}
+            {{ form_row(updateForm.dateHeureDebut) }}
+            {{ form_row(updateForm.duree) }}
+            {{ form_row(updateForm.dateLimiteInscription) }}
+            {{ form_row(updateForm.nbInscriptionMax) }}
+            {{ form_row(updateForm.infosSortie) }}
+        </div>
+        {#La zone du lieu s'actualise en fonction du lieu choisi, il est possible d'ajouter un lieu et une ville#}
+        <div class="col-sm-4 form-group">
+            {{ form_row(updateForm.lieu) }}
+
+            <div class="labelLieu" style="">
+                <label for="ville" id="ville">Ville : </label><p id="villeP"></p><br>
+                <label for="rue" id="rue">Rue : </label><p id="rueP"></p><br>
+                <label for="cp" id="cp">Code postal : </label><p id="cpP"></p><br>
+                <label for="lat" id="lat">Latitude : </label><p id="latP"></p><br>
+                <label for="lon" id="lon">Longitude : </label><p id="lonP"></p><br>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <!-- Button trigger modal Creer Lieu -->
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" style="margin-top: 30px">
+                <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
+            </button>
+        </div>
+
+    </div>
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <div class="btn-group">
+            {{ form_row(updateForm.enregistrer) }}
+            {{ form_row(updateForm.publier) }}
+            {{ form_end(updateForm) }}
+        </div>
+    </div>
+    <div class="col-sm-3"></div>
+    {#Déclaration des boutons de submits du formulaire de Sortie#}
+</div>
+
+    {#Déclaration du JavaScript nécessaire pour l'affichage des lieux#}
+<div class="lieuJS">
+    <script>
+        function afficherDetails(select) {
+            url = "{{ url('afficher_lieu', {'id': 0}) }}".replace("0", select.value);
+            console.log(url);
+            $.ajax(
+                {
+                    url: url,
+                    method: "GET"
+                })
+                .done(function (lieuAAfficher) {
+                    console.log(lieuAAfficher);
+                    $('#villeP').text(lieuAAfficher.ville);
+                    $('#rueP').text(lieuAAfficher.rue);
+                    $('#cpP').text(lieuAAfficher.cp);
+                    $('#latP').text(lieuAAfficher.latitude);
+                    $('#lonP').text(lieuAAfficher.longitude);
+
+                })
+                .fail(function (xhr, status, errorThrown) {
+                    erreurAJAX(xhr, status, errorThrown);
+                })
+        }
+
+        function erreurAJAX(xhr, status, errorThrown) {
+            console.log("Une erreur est survenue : %s (%s)", errorThrown, status);
+            console.log(xhr);
+        }
+    </script>
+{% endblock %}
+
+
+

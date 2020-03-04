@@ -1,22 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <form method="POST">
+    <h2 style="margin-top: 50px">Se connecter</h2>
+    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <form method="POST">
 
-        <label for="username">Pseudo</label><input type="text" name="_username" id="username" class="form-control"
-                {% if last_username is defined %}
-                    value="{{ last_username }}"
-                {% endif %}
-                                                   required autofocus>
-        <label for="password">Password</label><input type="password" name="_password" id="password"
-                                                     class="form-control">
-        <input type="hidden" id="csrf_token" name="_csrf_token" value="{{ csrf_token('csrf_token') }}">
-        <div><label for="check">se souvenir de moi</label> <input type="checkbox" name="_remember_me" id="check"></div>
-        <button class="btn btn-primary" type="submit">
-            Connexion
-        </button>
-        <a href="{{ path('MotDePasseOublié') }}" class="btn btn-warning">Mot de passe oublié</a>
-    </form>
+                <label for="username">Pseudo ou Email</label><input type="text" name="_username" id="username" class="form-control"
+                        {% if last_username is defined %}
+                            value="{{ last_username }}"
+                        {% endif %}
+                                                           required autofocus>
+                <label for="password">Password</label><input type="password" name="_password" id="password"
+                                                             class="form-control">
+                <input type="hidden" id="csrf_token" name="_csrf_token" value="{{ csrf_token('csrf_token') }}">
+                <div><label for="check">se souvenir de moi</label> <input type="checkbox" name="_remember_me" id="check"></div>
+                <button class="btn btn-secondary" type="submit">
+                    Connexion
+                </button>
+                <a href="{{ path('MotDePasseOublié') }}" class="btn btn-warning">Mot de passe oublié</a>
+            </form>
+        </div>
+        <div class="col-sm-3"></div>
+
+    </div>
 
 {% endblock %}
 

@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block main %}
+    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
+
 
     <br><h4 style="text-align: center">Nom de la sortie : {{ sortie.nom }}</h4><br>
 <h4 style="text-align: center">Date de la sortie : {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</h4><br>

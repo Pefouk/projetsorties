@@ -3,6 +3,7 @@
 {% block title %}Créer une sortie | {{ parent() }}{% endblock %}
 
 {% block main %}
+    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
 
     <div class="row">
         <div class="col-sm-12"><h2 style="padding-top: 50px">Créer une sortie</h2>
@@ -17,12 +18,8 @@
             {{ form_row(sortieForm.nbInscriptionMax) }}
             {{ form_row(sortieForm.infosSortie) }}
         </div>
-        <div class="col-sm-5 form-group">
+        <div class="col-sm-4 form-group">
             {{ form_row(sortieForm.lieu) }}
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
-                <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
-            </button>
 
             <div class="labelLieu" style="">
                 <label for="ville" id="ville">Ville : </label><p id="villeP"></p><br>
@@ -80,14 +77,28 @@
                 </script>
             </div>
         </div>
+        <div class="col-sm-1">
+            <!-- Button trigger modal Creer Lieu -->
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" style="margin-top: 30px">
+                <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
+            </button>
+        </div>
     </div>
     <div class="col-sm-1"></div>
     </div>
-    <div class="col-sm-12">
-        <button type="submit" class="btn btn-secondary btn-lg" style="margin-bottom: 50px">Enregistrer</button>
+    <div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4" style="margin-bottom: 50px; display: inline-block">
+            {{ form_row(sortieForm.enregistrer) }}
+            {{ form_row(sortieForm.publier) }}
         {{ form_end(sortieForm) }}<br>
+    </div>
+    <div class="col-sm-4"></div>
+    </div>
 
-        <!-- Modal -->
+        <!----------------------MODALES APPELEES-------------------->
+
+        <!-- Modal Creer Lieu -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -99,18 +110,50 @@
                     </div>
                     <div class="modal-body">
                         {{ form_start(lieuForm) }}
-                        {{ form_widget(lieuForm) }}
+                        {{ form_row(lieuForm.nom) }}
+                        {{ form_row(lieuForm.rue) }}
+                        {{ form_row(lieuForm.ville) }}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#villeModal" alt="Ajouter une ville">
+                            <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
+                        </button>
+                        {{ form_row(lieuForm.latitude) }}
+                        {{ form_row(lieuForm.longitude) }}
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-secondary">Ajouter ce lieu</button>
                     </div>
                     {{ form_end(lieuForm) }}
                 </div>
             </div>
         </div>
-    </div>
+        <!-- Modal creer ville-->
+        <div class="modal fade" id="villeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter une ville</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ form_start(villeForm) }}
+                        {{ form_widget(villeForm) }}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-primary">Ajouter cette ville</button>
+                    </div>
+                    {{ form_end(villeForm) }}
+                </div>
+            </div>
+        </div>
+
+
 
 {% endblock %}
 
