@@ -6,7 +6,9 @@ use App\Entity\Participant;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -20,6 +22,9 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/ListeUtilisateurs",name="ListeUtilisateurs")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
      */
 
     public function listerUtilisateurs(Request $request, EntityManagerInterface $em)
@@ -35,6 +40,10 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/desactiver/{id}",name="desactiver")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param $id
+     * @return RedirectResponse
      */
 
     public function desactiver(Request $request, EntityManagerInterface $em, $id)
@@ -51,6 +60,10 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/activer/{id}",name="activer")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param $id
+     * @return RedirectResponse
      */
 
     public function activer(Request $request, EntityManagerInterface $em, $id)
@@ -67,6 +80,10 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/supprimer/{id}",name="supprimer")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param $id
+     * @return RedirectResponse
      */
     public function supprimer(Request $request, EntityManagerInterface $em, $id)
     {
@@ -83,6 +100,10 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/creerCompte", name="creerCompte")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     * @return RedirectResponse|Response
      */
     public function creerCompte(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {

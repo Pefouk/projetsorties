@@ -6,6 +6,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Etat;
 use App\Entity\Sortie;
+use App\Exception\SortieException;
 use DateTime;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
@@ -13,6 +14,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class DoctrineEvents implements EventSubscriber
 {
@@ -31,15 +33,17 @@ class DoctrineEvents implements EventSubscriber
     {
         return [
             Events::postLoad,
-            Events::postPersist
+            Events::prePersist
         ];
     }
 
-    public function postPersist(LifecycleEventArgs $lifecycleEventArgs)
+    public function prePersist(LifecycleEventArgs $lifecycleEventArgs)
     {
         $entity = $lifecycleEventArgs->getEntity();
 
-        dump($entity);
+        if ($entity instanceof Sortie) {
+            $this->checkSortie($entity);
+        }
     }
         public function postLoad(LifecycleEventArgs $lifecycleEventArgs)
     {
@@ -75,5 +79,28 @@ class DoctrineEvents implements EventSubscriber
             } catch (ORMException $e) {
             }
         }
+    }
+
+    private function checkSortie(Sortie $entity)
+    {
+        $unJour = new \DateTime();
+        $unJour->add(date_interval_create_from_date_string('1 day'));
+        if ($entity->getNbInscriptionMax() <= 1)
+            throw new SortieException('Nombre d\'inscrit minimal incorrect, merci de demander minimum 2 personnes !');
+        if ($entity->getDateLimiteInscription() < $unJour)
+            throw new SortieException('Date limite d\'inscription incorrect, merci de prevoir un jour minimum !');
+        if ($entity->getDateLimiteInscription() > $entity->getDateHeureDebut())
+            throw new SortieException('Date invalide, merci de cloturer les inscriptions APRES le début de la sortie !');
+        if ($entity->getDuree()->getTimestamp() + $entity->getDuree()->getOffset() < 60 * 10)
+            throw new SortieException('Durée invalide, merci de prévoir au minimum 10 minutes !');
+        if ($entity->getDuree()->getTimestamp() + $entity->getDuree()->getOffset() > 60 * 60 * 24)
+            throw new SortieException('Durée invalide, merci de prévoir moins d\'un jour !');
+        if (strlen($entity->getNom()) <= 2)
+            throw new SortieException('Merci de mettre un nom de plus de 2 caractères !');
+        $unJour->add(date_interval_create_from_date_string('1 day'));
+        if ($entity->getDateHeureDebut() <= $unJour)
+            throw new SortieException('Date invalide, merci de prévoir au moins 2 jour pour le début de la sortie !');
+        if (strlen($entity->getInfosSortie()) < 20)
+            throw new SortieException('Description invalide, merci d\'écrire au moins 20 caractères !');
     }
 }

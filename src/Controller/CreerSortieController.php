@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
-use App\Entity\Etat;
+use App\Exception\SortieException;
 use App\Form\CreerSortieType;
 use App\Form\LieuType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,6 @@ class CreerSortieController extends AbstractController
     public function creerSortie(EntityManagerInterface $em, Request $request)
     {
         $this->denyAccessUnlessGranted("ROLE_USER");
-
         $sortie = new Sortie();
         $newlieu = new Lieu();
         $lieu = $em->getRepository(Lieu::class);
@@ -30,45 +30,35 @@ class CreerSortieController extends AbstractController
         $etat = $etatRep->find(1);
         $sortie->setEtat($etat);
         $organisateur = $this->getUser();
-
-
-
-        if($organisateur instanceof Participant)
-        {
+        if ($organisateur instanceof Participant) {
             $sortie->setOrganise($organisateur);
             $sortie->setCampus($organisateur->getCampus());
             $lieuRepo = $this->getDoctrine()->getRepository(Lieu::class);
             $lieux = $lieuRepo->findBy([]);
             $sortieForm = $this->createForm(CreerSortieType::class, $sortie);
             $lieuForm = $this->createForm(LieuType::class, $newlieu);
-
             $sortieForm->handleRequest($request);
             $lieuForm->handleRequest($request);
         }
-
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
             $em->persist($newlieu);
             $em->flush();
-
             $this->addFlash("success", "Votre lieu a bien été ajouté à la liste !");
             return $this->redirectToRoute('creer_sortie');
         }
-
-        if($sortieForm->isSubmitted())
-        {
-            $em->persist($sortie);
-            $em->flush();
-
-            $this->addFlash("success", "Votre sortie a bien été créée.");
-
+        if ($sortieForm->isSubmitted()) {
+            try {
+                $em->persist($sortie);
+                $em->flush();
+                $this->addFlash("success", "Votre sortie a bien été créée.");
+            } catch (SortieException $e) {
+                $this->addFlash("danger", $e->getMessage());
+            }
         }
         return $this->render('sortie/creersortie.html.twig', [
-            "sortieForm"=>$sortieForm->createView(),
-            "lieuForm"=>$lieuForm->createView(),
-            "lieux"=> $lieux,
+            "sortieForm" => $sortieForm->createView(),
+            "lieuForm" => $lieuForm->createView(),
+            "lieux" => $lieux,
         ]);
     }
-
-
-
 }
