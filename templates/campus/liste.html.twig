@@ -17,6 +17,7 @@
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
+                <a href="{{ path('campus_creer') }}" class="btn btn-primary btn-block">Nouveau site</a>
                 {% if sites is empty %}
                     <h2>Pas de sites trouvés !</h2>
                 {% else %}
@@ -32,8 +33,9 @@
                             {% for site in sites %}
                                 <tr>
                                     <td>{{ site.nom | upper }}</td>
-                                    <td><a href="{{ path('campus_modifier', {'id': site.id}) }}">Modifier </a> -
-                                        Supprimer
+                                    <td><a href="{{ path('campus_modifier', {'id': site.id}) }}">Modifier </a>
+                                        -
+                                        <a href="{{ path('campus_supprimer', {'id': site.id}) }}">Supprimer</a>
                                     </td>
                                 </tr>
                             {% endfor %}

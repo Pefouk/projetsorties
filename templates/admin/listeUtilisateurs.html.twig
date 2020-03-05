@@ -16,6 +16,7 @@
             <thead>
             <tr>
                 <th scope="col">Pseudo</th>
+                <th scope="col">Campus</th>
                 <th scope="col">Nom de l'utilisateur</th>
                 <th scope="col">Prénom</th>
                 <th scope="col">Téléphone</th>
@@ -29,6 +30,7 @@
             {% for participant in liste %}
                 <tr>
                     <td><a href="{{ path('profil', {'id': participant.id}) }}">{{ participant.pseudo }}</a></td>
+                    <td>{{ participant.campus.nom }}</td>
                     <td>{{ participant.nom }}</td>
                     <td>{{ participant.prenom }}</td>
                     <td>{{ participant.telephone }}</td>
