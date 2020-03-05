@@ -92,7 +92,7 @@ main {
 
 body {
     background-color: #ececec;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
 .sorties {
@@ -134,10 +134,36 @@ table {
 
 .titre
 {
-    margin-top: 30px;
     margin-bottom: 15px;
 }
 #boutons
 {
     margin-bottom: 40px;
+}
+
+#boutonssorties
+{
+    margin-bottom: 50px;
+    display: block ruby;
+}
+
+#falsebtn
+{
+    padding-bottom: 15px;
+    text-decoration: none;
+    color: white;
+}
+
+.modaldecl
+{
+    text-align: center;
+}
+
+
+
+.col-sm-12
+{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
 }

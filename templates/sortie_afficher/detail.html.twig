@@ -33,7 +33,7 @@
             <p class="labelp">Nombre de places :</p><p> {{ sortie.inscrit.count }}/{{ sortie.nbInscriptionMax }}</p>
             <p class="labelp">Durée :</p><p> {{ sortie.duree|date('d') - 1 }} jours {{ sortie.duree|date('H') }} heures
                 et {{ sortie.duree|date('i') }} minutes</p>
-            <p class="labelp">Description et info : {{ sortie.infosSortie }}</p>
+            <p class="labelp">Description et info :</p><p> {{ sortie.infosSortie }}</p>
         </div>
         <div class="col-sm-5">
             <p class="labelp">Lieu :</p><p> {{ sortie.lieu.nom }}</p>
@@ -46,8 +46,8 @@
         <div class="col-sm-1"></div>
         </div>
         <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
             {% if sortie.inscrit|length > 0 %}
                 <h3>Liste des participants inscrits</h3>
                 <table>
@@ -67,23 +67,23 @@
                     </tbody>
                 </table>
                 </div>
-                <div class="col-sm-3"></div>
+                <div class="col-sm-1"></div>
         </div>
                 <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10">
             {% else %}
-                <h3>Aucun participant pour cet evenement !</h3>
+                <h3>Aucun participant pour cet événement !</h3>
             {% endif %}
         </div>
         <div class="col-sm-1"></div>
-        </div>
+        </div><br>
         <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8" id="boutons">
         {% if sortie.etat.libelle == 'Ouverte' %}
             {% if sortie.isInscrit(app.user) %}
-                <a class="btn btn-secondary btn-lg" href="{{ path('desinscrire',{'id':sortie.id}) }}">Se desister</a>
+                <a class="btn btn-secondary btn-lg" href="{{ path('desinscrire',{'id':sortie.id}) }}">Se désister</a>
             {% else %}
                 <a class="btn btn-secondary btn-lg" href="{{ path('sinscrire',{'id':sortie.id}) }}">S'inscrire</a>
             {% endif %}
