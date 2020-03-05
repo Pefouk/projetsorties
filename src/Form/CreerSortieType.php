@@ -6,6 +6,7 @@ use App\Entity\Sortie;
 use App\Entity\Lieu;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -54,8 +55,7 @@ class CreerSortieType extends AbstractType
                 'label'=>'Publier une sortie',
                 'attr'=>[
                 'value'=>'Publier',
-                    'class'=> 'btn btn-secondary btn-lg'
-    ]
+                    'class'=> 'btn btn-secondary btn-lg']
             ]);
     }
 

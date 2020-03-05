@@ -98,4 +98,19 @@ class ModifierSortieController extends AbstractController
             "sortie"=>$sortie
         ]);
     }
+
+    /**
+     * @Route("/sortie/delete/{id}", name="sortie_delete", requirements={"id":"\d+"})
+     */
+    public function delete($id, EntityManagerInterface $em)
+    {
+        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        $sortie = $sortieRepo->find($id);
+
+        $em->remove($sortie);
+        $em->flush();
+
+        $this->addFlash("success", "Votre sortie a bien été supprimée.");
+        return $this->redirectToRoute('sorties_afficher');
+    }
 }

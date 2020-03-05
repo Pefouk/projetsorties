@@ -9,17 +9,20 @@
 
 {% block main %}
 
-    <table>
+    <h2 style="margin-top: 50px">Liste des utilisateurs</h2>
+
+    <div class="table-responsive-md" style="margin-top: 50px">
+    <table class="table">
         <thead>
         <tr>
-            <th>pseudo</th>
-            <th>Nom de l'utilisateur</th>
-            <th>prenom</th>
-            <th>téléphone</th>
-            <th>administrateur</th>
-            <th>état</th>
-            <th>photo</th>
-            <th>actions</th>
+            <th scope="col">Pseudo</th>
+            <th scope="col">Nom de l'utilisateur</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">Administrateur</th>
+            <th scope="col">Etat</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -51,5 +54,6 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('admin_creerCompte') }}" class="btn btn-primary">Créer un compte</a>
+    </div>
+    <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a>
 {% endblock %}

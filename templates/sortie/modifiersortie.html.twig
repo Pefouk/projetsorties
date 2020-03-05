@@ -21,6 +21,17 @@
         {#La zone du lieu s'actualise en fonction du lieu choisi, il est possible d'ajouter un lieu et une ville#}
         <div class="col-sm-4 form-group">
             {{ form_row(updateForm.lieu) }}
+           {# <div class="modaldecl">
+            <!-- Button trigger modal Creer Lieu -->
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+                Ajouter un lieu
+            </button>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#villeModal" alt="Ajouter une ville">
+                Ajouter une ville
+            </button>
+            </div>#}
 
             <div class="labelLieu" style="">
                 <label for="ville" id="ville">Ville : </label><p id="villeP"></p><br>
@@ -31,23 +42,19 @@
             </div>
         </div>
         <div class="col-sm-1">
-            <!-- Button trigger modal Creer Lieu -->
-{#            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" style="margin-top: 30px">
-                <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
-            </button>#}
         </div>
 
     </div>
 <div class="row">
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6">
-        <div class="btn-group">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4" id="boutonssorties">
             {{ form_row(updateForm.enregistrer) }}
             {{ form_row(updateForm.publier) }}
+        <a class="btn-secondary btn-lg" id="falsebtn" href="{{ path('sortie_delete', {'id':sortie.id}) }}">Supprimer la sortie</a>
+        <a class="btn-secondary btn-lg" href="{{ path('sorties_afficher') }}" id="falsebtn">Annuler</a>
             {{ form_end(updateForm) }}
-        </div>
     </div>
-    <div class="col-sm-3"></div>
+    <div class="col-sm-4"></div>
     {#Déclaration des boutons de submits du formulaire de Sortie#}
 </div>
 
@@ -86,7 +93,7 @@
     <!----------------------MODALES APPELEES-------------------->
 
     <!-- Modal Creer Lieu -->
-    {#<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{#    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -100,10 +107,6 @@
                     {{ form_row(lieuForm.nom) }}
                     {{ form_row(lieuForm.rue) }}
                     {{ form_row(lieuForm.ville) }}
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#villeModal" alt="Ajouter une ville">
-                        <img src="https://i2.wp.com/web.cdvb77.fr/wp-content/uploads/2018/11/plus-icon.png" width="30px">
-                    </button>
                     {{ form_row(lieuForm.latitude) }}
                     {{ form_row(lieuForm.longitude) }}
 
@@ -132,13 +135,13 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                    <button type="submit" class="btn btn-primary">Ajouter cette ville</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Retour</button>
+                    <button type="submit" class="btn btn-secondary">Ajouter cette ville</button>
                 </div>
                 {{ form_end(villeForm) }}
             </div>
-        </div>#}
-    </div>
+        </div>#}{#
+    </div>#}
 {% endblock %}
 
 
