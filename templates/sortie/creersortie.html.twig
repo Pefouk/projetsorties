@@ -81,6 +81,7 @@
     <div class="col-sm-4"  id="boutonssorties">
             {{ form_row(sortieForm.enregistrer) }}
             {{ form_row(sortieForm.publier) }}
+        {{ form_end(sortieForm) }}
         <a class="btn-secondary btn-lg" href="{{ path('sorties_afficher') }}" id="falsebtn">Annuler</a>
     </div>
     <div class="col-sm-4"></div>
