@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Sites{% endblock %}
+{% block title %}Liste des ville{% endblock %}
 
 {% block head %}
     {{ parent() }}
@@ -17,25 +17,27 @@
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
-                <a href="{{ path('campus_creer') }}" class="btn btn-primary btn-block">Nouveau site</a>
-                {% if sites is empty %}
-                    <h2>Pas de sites trouvés !</h2>
+                <a href="{{ path('ville_creer') }}" class="btn btn-primary btn-block">Nouvelle ville</a>
+                {% if villes is empty %}
+                    <h2>Pas de villes trouvés !</h2>
                 {% else %}
                     <div class="table-responsive-md">
                         <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>Ville</th>
+                                <th>Code postal</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for site in sites %}
+                            {% for ville in villes %}
                                 <tr>
-                                    <td>{{ site.nom | upper }}</td>
-                                    <td><a href="{{ path('campus_modifier', {'id': site.id}) }}">Modifier </a>
+                                    <td>{{ ville.nom | upper }}</td>
+                                    <td>{{ ville.codePostale | upper }}</td>
+                                    <td><a href="{{ path('ville_modifier', {'id': ville.id}) }}">Modifier </a>
                                         -
-                                        <a href="{{ path('campus_supprimer', {'id': site.id}) }}">Supprimer</a>
+                                        <a href="{{ path('ville_supprimer', {'id': ville.id}) }}">Supprimer</a>
                                     </td>
                                 </tr>
                             {% endfor %}

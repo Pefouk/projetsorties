@@ -14,6 +14,21 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class VilleRepository extends ServiceEntityRepository
 {
+
+    public function findByName($name)
+    {
+        if ($name == null)
+            $name = '%';
+        else
+            $name = '%' . $name . '%';
+        return $this->createQueryBuilder('v')
+            ->select('v')
+            ->andWhere('v.nom LIKE :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ville::class);

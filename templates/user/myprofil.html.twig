@@ -4,13 +4,13 @@
     <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
     <div class="row" id="profil">
 
-        <div class="col-sm-12"><h2>Mon profil</h2></div>
+        <div class="col-sm-12"><h2>Profil de {{ profil.pseudo }}</h2></div>
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <div class="form-group">
                 {% if profil.avatar is not null %}
                     <div style="text-align: center;"><img src="{{ asset('images/participant/') }}{{ profil.avatar }}"
-                                                          width="20%"></div>
+                                                          width="300vw"></div>
                 {% else %}
                     <p>Pas d'image de profil</p>
                 {% endif %}

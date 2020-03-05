@@ -136,7 +136,7 @@ class AdminController extends AbstractController
             $em->persist($basicUser);
             $em->flush();
             $this->addFlash("success", "Compte créé.");
-            return $this->redirectToRoute("home_home");
+            return $this->redirectToRoute("admin_ListeUtilisateurs");
         }
         return $this->render('admin/register.html.twig',
             [

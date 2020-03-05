@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Form\FiltrerCampusType;
 use App\Form\ModifierCampusType;
+use App\Form\NouveauCampusType;
 use App\Form\SupprimerCampusType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +21,27 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CampusController extends AbstractController
 {
+
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @Route("/nouveau", name="creer")
+     * @return RedirectResponse|Response
+     */
+    public function creerCampus(Request $request, EntityManagerInterface $entityManager)
+    {
+        $campus = new Campus();
+        $form = $this->createForm(NouveauCampusType::class, $campus);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($campus);
+            $entityManager->flush();
+            $this->addFlash('success', 'Nouveau site créé !');
+            return $this->redirectToRoute('campus_liste');
+        }
+        return $this->render('campus/creer.html.twig', ['form' => $form->createView()]);
+    }
+
     /**
      * @param Request $request
      * @param int $id
@@ -39,7 +62,7 @@ class CampusController extends AbstractController
         } elseif ($form->isSubmitted()) {
             $this->addFlash('danger', 'La suppression du site est incorrect !');
         }
-        return $this->render('campus/supprimer.html.twig', ['form' => $form->createView()]);
+        return $this->render('campus/supprimer.html.twig', ['form' => $form->createView(), 'nom' => $campus->getNom()]);
     }
 
     /**
@@ -77,7 +100,6 @@ class CampusController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $name = $form->get('nom')->getViewData();
-            dump($name);
         } else {
             $name = null;
         }

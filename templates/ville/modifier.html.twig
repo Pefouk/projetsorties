@@ -1,15 +1,13 @@
 {% extends 'base.html.twig' %}
-{% block title %} Supprimer le site | {{ parent() }}{% endblock %}
+{% block title %} Modifier le site | {{ parent() }}{% endblock %}
 {% block main %}
     <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
     <div class="row" id="profil">
-        <div class="col-sm-12"><h2>{{ nom }}</h2></div>
+        <div class="col-sm-12"><h2>Modifier la ville</h2></div>
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <div class="form-group">
                 {{ form_start(form) }}<br>
-                <h2>Êtes vous sur de vouloir supprimer ce site ?</h2>
-                <h2>Sa suppression sera définitive et les profils ainsi que les sortie liées a celui ci seront également supprimé !</h2>
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
             </div>

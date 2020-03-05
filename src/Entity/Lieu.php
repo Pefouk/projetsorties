@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Asserts;
 
 /**
@@ -47,8 +45,7 @@ class Lieu
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ville", inversedBy="lieu")
-     * @ORM\JoinColumn(nullable=false)
-     *
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $ville;
 

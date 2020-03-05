@@ -81,6 +81,7 @@
     <div class="col-sm-4"  id="boutonssorties">
             {{ form_row(sortieForm.enregistrer) }}
             {{ form_row(sortieForm.publier) }}
+        {{ form_end(sortieForm) }}
         <a class="btn-secondary btn-lg" href="{{ path('sorties_afficher') }}" id="falsebtn">Annuler</a>
     </div>
     <div class="col-sm-4"></div>
@@ -131,8 +132,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Ajouter cette ville</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-secondary">Ajouter cette ville</button>
                     </div>
                     {{ form_end(villeForm) }}
                 </div>
