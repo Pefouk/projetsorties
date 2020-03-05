@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
-use App\Entity\Etat;
 use App\Entity\Ville;
 use App\Exception\SortieException;
 use App\Form\CreerSortieType;
@@ -14,7 +14,6 @@ use App\Form\VilleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreerSortieController extends AbstractController
@@ -45,39 +44,48 @@ class CreerSortieController extends AbstractController
 
         $sortieForm->handleRequest($request);
 
-        if($organisateur instanceof Participant)
-        {
-            if($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+        if ($organisateur instanceof Participant) {
+            if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
                 if ($sortieForm->getClickedButton() === $sortieForm->get('enregistrer')) {
                     $etat = $etatRep->find(1);
                     $sortie->setEtat($etat);
-
-                    $em->persist($sortie);
-                    $em->flush();
-                    $this->addFlash("success", "Votre sortie a bien été créée !");
+                    try {
+                        $em->persist($sortie);
+                        $em->flush();
+                        $this->addFlash("success", "Votre sortie a bien été créée !");
+                    } catch (SortieException $e) {
+                        $this->addFlash("danger", $e->getMessage());
+                        return $this->render('sortie/creersortie.html.twig', [
+                            "sortieForm" => $sortieForm->createView(),
+                            "lieuForm" => $lieuForm->createView(),
+                            "villeForm" => $villeForm->createView(),
+                            "lieux" => $lieux,
+                        ]);
+                    }
                     return $this->redirectToRoute('sorties_afficher');
                 }
                 if ($sortieForm->getClickedButton() === $sortieForm->get('publier')) {
                     $etat = $etatRep->find(2);
                     $sortie->setEtat($etat);
-
-                    $em->persist($sortie);
-                    $em->flush();
-                    $this->addFlash("success", "Votre sortie a bien été publiée !");
+                    try {
+                        $em->persist($sortie);
+                        $em->flush();
+                        $this->addFlash("success", "Votre sortie a bien été publiée !");
+                    } catch (SortieException $e) {
+                        $this->addFlash("danger", $e->getMessage());
+                        return $this->render('sortie/creersortie.html.twig', [
+                            "sortieForm" => $sortieForm->createView(),
+                            "lieuForm" => $lieuForm->createView(),
+                            "villeForm" => $villeForm->createView(),
+                            "lieux" => $lieux,
+                        ]);
+                    }
                     return $this->redirectToRoute('sorties_afficher');
                 }
-            }try {
-            $em->persist($sortie);
-            $em->flush();
-            $this->addFlash("success", "Votre sortie a bien été créée.");
-        } catch (SortieException $e) {
-            $this->addFlash("danger", $e->getMessage());
-        }
-
+            }
             $lieuForm->handleRequest($request);
             $villeForm->handleRequest($request);
         }
-
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
             $em->persist($newlieu);
             $em->flush();
@@ -86,18 +94,17 @@ class CreerSortieController extends AbstractController
             return $this->redirectToRoute('creer_sortie');
         }
 
-        if($villeForm->isSubmitted())
-        {
+        if ($villeForm->isSubmitted()) {
             $em->persist($newVille);
             $em->flush();
 
-            $this->addFlash("success","Ville ajoutée !");
+            $this->addFlash("success", "Ville ajoutée !");
         }
         return $this->render('sortie/creersortie.html.twig', [
-            "sortieForm"=>$sortieForm->createView(),
-            "lieuForm"=>$lieuForm->createView(),
-            "villeForm"=>$villeForm->createView(),
-            "lieux"=> $lieux,
+            "sortieForm" => $sortieForm->createView(),
+            "lieuForm" => $lieuForm->createView(),
+            "villeForm" => $villeForm->createView(),
+            "lieux" => $lieux,
         ]);
     }
 
@@ -110,7 +117,6 @@ class CreerSortieController extends AbstractController
 
 
     }
-
 
 
 }

@@ -30,9 +30,9 @@
                 <td>{{ participant.prenom }}</td>
                 <td>{{ participant.telephone }}</td>
                 {% if participant.administrateur %}
-                    <td>oui</td>
+                    <td>oui <a href="{{ path('admin_annulerAdmin', {'id': participant.id}) }}">Annuler Admin</a></td>
                 {% else %}
-                    <td>non</td>
+                    <td>non <a href="{{ path('admin_passerAdmin', {'id': participant.id}) }}">passer Admin</a></td>
                 {% endif %}
                 {% if participant.actif %}
                     <td style="background-color: #3c763d">actif</td>
