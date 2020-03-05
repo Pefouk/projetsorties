@@ -18,6 +18,9 @@
     "jms/metadata": {
         "version": "2.1.0"
     },
+    "league/csv": {
+        "version": "9.5.0"
+    },
     "pagerfanta/pagerfanta": {
         "version": "v2.1.3"
     },

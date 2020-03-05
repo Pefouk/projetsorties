@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des sorties{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
+    <div class="sorties">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="showSorties">
+                {% if sites is empty %}
+                    <h2>Pas de sites trouvés !</h2>
+                {% else %}
+                    <div class="table-responsive-md">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Ville</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for site in sites %}
+                                <tr>
+                                    <td>{{ site.nom }}</td>
+                                    <td>Modifier - Supprimer</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+{% endblock %}
