@@ -174,3 +174,25 @@ table {
 {
 text-align: center;
 }
+
+.section-hello
+{
+    background-color: #991e95;
+    padding: 2%;
+}
+
+.hellocard
+{
+    margin-left: 35%;
+    width: 30%;
+    border-style: solid;
+    border-color: #f1cf15;
+    text-align: center;
+    padding: 10px;
+}
+
+.hellotitle
+{
+    color: #f1cf15;
+    text-shadow: 1px 1px #ef9c15;
+}
