@@ -122,3 +122,18 @@ table
     padding-top: 50px;
     padding-bottom: 50px;
 }
+
+.labelp
+{
+    font-weight: bold;
+}
+
+.titre
+{
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+#boutons
+{
+    margin-bottom: 40px;
+}
