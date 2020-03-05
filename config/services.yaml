@@ -7,6 +7,14 @@ parameters:
     app.path.participant_images: /images/participant
 
 services:
+
+    console_command.csv_import:
+        class: App\Command\CsvImportCommand
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: console.command }
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -29,3 +37,4 @@ services:
     App\EventSubscriber\DoctrineEvents:
         tags:
             - {name : 'doctrine.event_subscriber'}
+
