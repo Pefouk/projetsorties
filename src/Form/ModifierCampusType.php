@@ -18,7 +18,7 @@ class ModifierCampusType extends AbstractType
             'required' => true
         ])->add('Valider', SubmitType::class, [
             'validate' => true,
-            'attr' => ['class' => 'btn btn-secondary btn-lg']
+            'attr' => ['class' => 'btn btn-secondary btn-block']
         ]);
     }
 

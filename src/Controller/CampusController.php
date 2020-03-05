@@ -100,7 +100,6 @@ class CampusController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $name = $form->get('nom')->getViewData();
-            dump($name);
         } else {
             $name = null;
         }
