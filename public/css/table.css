@@ -65,7 +65,7 @@ nav {
 
 .container-fluid {
     position: relative;
-    min-height: 100vh;
+    min-height: 100%;
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
@@ -92,6 +92,7 @@ main {
 
 body {
     background-color: #ececec;
+    margin-bottom: 100px;
 }
 
 .sorties {

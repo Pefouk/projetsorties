@@ -1,12 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block title %}Mon profil | {{ parent() }}{% endblock %}
 {% block main %}
-    <h2>{{ participant.username }}</h2>
-    <div class="form-group">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Changer de mot de passe" name="Changer de mot de passe" class="btn btn-secondary"/>
-        {{ form_end(form) }}
+    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
+    <div class="row">
+        <div class="col-sm-12"><h2>{{ participant.username }}</h2></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input type="submit" value="Changer de mot de passe" name="Changer de mot de passe" class="btn btn-secondary"/>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
     </div>
 {% endblock %}
 
