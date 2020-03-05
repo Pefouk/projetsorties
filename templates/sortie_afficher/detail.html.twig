@@ -19,80 +19,93 @@
     {% else %}
         <div class="row">
             <div class="col-sm-12">
-        <h2 class="titre">{{ sortie.nom }}</h2>
+                <h2 class="titre">{{ sortie.nom }}</h2>
             </div>
         </div>
         <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-5">
-            <p class="labelp">Nom de la sortie :</p><p> {{ sortie.nom }}</p>
-            <p class="labelp">Etat :</p><p> {{ sortie.etat.libelle }}</p>
-            <p class="labelp">Organisateur :</p><p> {{ sortie.organise.prenom }} {{ sortie.organise.nom|upper }}</p>
-            <p class="labelp">Date et heure de la sortie :</p><p> {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
-            <p class="labelp">Date limite d'inscription :</p><p> {{ sortie.dateLimiteInscription|date('d/m/Y H:i') }}</p>
-            <p class="labelp">Nombre de places :</p><p> {{ sortie.inscrit.count }}/{{ sortie.nbInscriptionMax }}</p>
-            <p class="labelp">Durée :</p><p> {{ sortie.duree|date('d') - 1 }} jours {{ sortie.duree|date('H') }} heures
-                et {{ sortie.duree|date('i') }} minutes</p>
-            <p class="labelp">Description et info : {{ sortie.infosSortie }}</p>
-        </div>
-        <div class="col-sm-5">
-            <p class="labelp">Lieu :</p><p> {{ sortie.lieu.nom }}</p>
-            <p class="labelp">Rue :</p><p> {{ sortie.lieu.rue }}</p>
-            <p class="labelp">Ville :</p><p> {{ sortie.lieu.ville.nom }}</p>
-            <p class="labelp">Code postal :</p><p> {{ sortie.lieu.ville.codePostale }}</p>
-            <p class="labelp">Latitude :</p><p> {{ sortie.lieu.latitude }}</p>
-            <p class="labelp">Longitude :</p><p> {{ sortie.lieu.longitude }}</p>
-        </div>
-        <div class="col-sm-1"></div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5">
+                <p class="labelp">Nom de la sortie :</p>
+                <p> {{ sortie.nom }}</p>
+                <p class="labelp">Etat :</p>
+                <p> {{ sortie.etat.libelle }}</p>
+                <p class="labelp">Organisateur :</p>
+                <p><a href="{{ path('profil', {'id':sortie.organise.id}) }}">{{ sortie.organise.prenom }} {{ sortie.organise.nom|upper }}</a></p>
+                <p class="labelp">Date et heure de la sortie :</p>
+                <p> {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
+                <p class="labelp">Date limite d'inscription :</p>
+                <p> {{ sortie.dateLimiteInscription|date('d/m/Y H:i') }}</p>
+                <p class="labelp">Nombre de places :</p>
+                <p> {{ sortie.inscrit.count }}/{{ sortie.nbInscriptionMax }}</p>
+                <p class="labelp">Durée :</p>
+                <p> {{ sortie.duree|date('d') - 1 }} jours {{ sortie.duree|date('H') }} heures
+                    et {{ sortie.duree|date('i') }} minutes</p>
+                <p class="labelp">Description et info : {{ sortie.infosSortie }}</p>
+            </div>
+            <div class="col-sm-5">
+                <p class="labelp">Lieu :</p>
+                <p> {{ sortie.lieu.nom }}</p>
+                <p class="labelp">Rue :</p>
+                <p> {{ sortie.lieu.rue }}</p>
+                <p class="labelp">Ville :</p>
+                <p> {{ sortie.lieu.ville.nom }}</p>
+                <p class="labelp">Code postal :</p>
+                <p> {{ sortie.lieu.ville.codePostale }}</p>
+                <p class="labelp">Latitude :</p>
+                <p> {{ sortie.lieu.latitude }}</p>
+                <p class="labelp">Longitude :</p>
+                <p> {{ sortie.lieu.longitude }}</p>
+            </div>
+            <div class="col-sm-1"></div>
         </div>
         <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
-            {% if sortie.inscrit|length > 0 %}
-                <h3>Liste des participants inscrits</h3>
-                <table>
-                    <thead>
+        {% if sortie.inscrit|length > 0 %}
+            <h3>Liste des participants inscrits</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Nom</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for participant in sortie.inscrit %}
                     <tr>
-                        <th>Pseudo</th>
-                        <th>Nom</th>
+                        <td><a href="{{ path('profil', {'id':participant.id}) }}">{{ participant.pseudo }}</a></td>
+                        <td>{{ participant.prenom }} {{ participant.nom|upper }}</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for participant in sortie.inscrit %}
-                        <tr>
-                            <td><a href="{{ path('profil', {'id':participant.id}) }}">{{ participant.pseudo }}</a></td>
-                            <td>{{ participant.prenom }} {{ participant.nom|upper }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                </div>
-                <div class="col-sm-3"></div>
-        </div>
-                <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10">
-            {% else %}
-                <h3>Aucun participant pour cet evenement !</h3>
-            {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+            <div class="col-sm-3"></div>
+            </div>
+            <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+        {% else %}
+            <h3>Aucun participant pour cet evenement !</h3>
+        {% endif %}
         </div>
         <div class="col-sm-1"></div>
         </div>
         <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8" id="boutons">
-        {% if sortie.etat.libelle == 'Ouverte' %}
+        {% if sortie.etat.id == 2 %}
             {% if sortie.isInscrit(app.user) %}
                 <a class="btn btn-secondary btn-lg" href="{{ path('desinscrire',{'id':sortie.id}) }}">Se desister</a>
             {% else %}
                 <a class="btn btn-secondary btn-lg" href="{{ path('sinscrire',{'id':sortie.id}) }}">S'inscrire</a>
             {% endif %}
-        {% elseif sortie.etat.libelle == 'Créée' and (app.user == sortie.organise or is_granted('ROLE_ADMIN'))%}
+        {% elseif sortie.etat.id == 1 and (app.user == sortie.organise or is_granted('ROLE_ADMIN')) %}
             <a class="btn btn-secondary btn-lg" href="{{ path('sorties_publier', {'id':sortie.id}) }}">Publier</a>
         {% endif %}
     {% endif %}
-        </div>
-        <div class="col-sm-2"></div>
+    </div>
+    <div class="col-sm-2"></div>
 
     </div>
 

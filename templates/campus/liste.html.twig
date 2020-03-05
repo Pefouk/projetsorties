@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des sorties{% endblock %}
+{% block title %}Liste des Sites{% endblock %}
 
 {% block head %}
     {{ parent() }}
@@ -14,6 +14,9 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <div class="showSorties">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
                 {% if sites is empty %}
                     <h2>Pas de sites trouvés !</h2>
                 {% else %}
@@ -28,8 +31,10 @@
                             <tbody>
                             {% for site in sites %}
                                 <tr>
-                                    <td>{{ site.nom }}</td>
-                                    <td>Modifier - Supprimer</td>
+                                    <td>{{ site.nom | upper }}</td>
+                                    <td><a href="{{ path('campus_modifier', {'id': site.id}) }}">Modifier </a> -
+                                        Supprimer
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
