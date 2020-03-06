@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-sm-12">
 
-    <h2 style="margin-top: 50px">Liste des utilisateurs</h2>
+            <h2 style="margin-top: 50px">Liste des utilisateurs</h2>
         </div>
     </div>
     <div class="row">
@@ -42,10 +42,12 @@
                             <td>{{ participant.prenom }}</td>
                             <td>{{ participant.telephone }}</td>
                             {% if participant.administrateur %}
-                                <td>oui <a href="{{ path('admin_annulerAdmin', {'id': participant.id}) }}">Annuler Admin</a>
+                                <td>oui <a href="{{ path('admin_annulerAdmin', {'id': participant.id}) }}">Annuler
+                                        Admin</a>
                                 </td>
                             {% else %}
-                                <td>non <a href="{{ path('admin_passerAdmin', {'id': participant.id}) }}">passer Admin</a></td>
+                                <td>non <a href="{{ path('admin_passerAdmin', {'id': participant.id}) }}">passer
+                                        Admin</a></td>
                             {% endif %}
                             {% if participant.actif %}
                                 <td style="background-color: #3c763d">actif</td>
@@ -53,15 +55,16 @@
                                 <td style="background-color: #AA3333">Inactif</td>
                             {% endif %}
                             <td>{% if participant.avatar != null %}
-                                    <img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"
-                                         width="20%">
+                                    <img src="{{ asset('images/participant/') }}{{ participant.avatar }}"
+                                         width="80vw">
                                 {% else %}
                                     <p>Pas d'image</p>
                                 {% endif %}
                             </td>
                             {% if participant.actif %}
                                 <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">supprimer</a> <a
-                                            href="{{ path('admin_desactiver', {'id': participant.id}) }}">desactiver</a></td>
+                                            href="{{ path('admin_desactiver', {'id': participant.id}) }}">desactiver</a>
+                                </td>
                             {% else %}
                                 <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">supprimer</a>
                                     <a href="{{ path('admin_activer', {'id': participant.id}) }}">activer</a></td>
@@ -70,9 +73,9 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="col-sm-1"></div>
         </div>
-        <div class="col-sm-1"></div>
-    </div>
 
     </div>
     <div class="row">
@@ -80,11 +83,12 @@
         <div class="col-sm-11"><br>
             <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a>
 
-    <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a><br>
-    {{ form_start(importForm) }}<br>
-    {{ form_widget(importForm) }}
-    <button type="submit" class="btn btn-secondary btn-lg">Importer des participants</button>  <a href="{{ path('admin_importCsv') }}">Annuler</a>
-    {{ form_end(importForm) }}
+            <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a><br>
+            {{ form_start(importForm) }}<br>
+            {{ form_widget(importForm) }}
+            <button type="submit" class="btn btn-secondary btn-lg">Importer des participants</button>
+            <a href="{{ path('admin_importCsv') }}">Annuler</a>
+            {{ form_end(importForm) }}
         </div>
     </div>
 {% endblock %}

@@ -30,7 +30,9 @@
                 <p class="labelp">Etat :</p>
                 <p> {{ sortie.etat.libelle }}</p>
                 <p class="labelp">Organisateur :</p>
-                <p><a href="{{ path('profil', {'id':sortie.organise.id}) }}">{{ sortie.organise.prenom }} {{ sortie.organise.nom|upper }}</a></p>
+                <p>
+                    <a href="{{ path('profil', {'id':sortie.organise.id}) }}">{{ sortie.organise.prenom }} {{ sortie.organise.nom|upper }}</a>
+                </p>
                 <p class="labelp">Date et heure de la sortie :</p>
                 <p> {{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</p>
                 <p class="labelp">Date limite d'inscription :</p>
@@ -55,6 +57,10 @@
                 <p> {{ sortie.lieu.latitude }}</p>
                 <p class="labelp">Longitude :</p>
                 <p> {{ sortie.lieu.longitude }}</p>
+                {% if sortie.etat.id == 6 %}
+                    <p class="labelp">Motif de l'annulation : </p>
+                    <p>{{ sortie.MotifAnnulation }}</p>
+                {% endif %}
             </div>
             <div class="col-sm-1"></div>
         </div>
