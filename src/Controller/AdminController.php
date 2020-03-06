@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+use App\Command\CsvImportCommand;
+
 /**
  * Class AdminController
  * @package App\Controller
@@ -180,6 +182,7 @@ class AdminController extends AbstractController
         $importForm = $this->createForm(CsvType::class);
         $importForm->handleRequest($request);
         $import = $importForm->get('csvImport')->getData();
+        $import->move('%kernel.root_dir%/../src/Data/MOCK_DATA.csv');
         return $this->render('admin/import.html.twig', [
             "liste" => $liste,
             "profil" => $user,

@@ -52,7 +52,7 @@ class CsvImportCommand extends Command
 
         $io->title('en attente d\'import');
         $reader = Reader::createFromPath('%kernel.root_dir%/../src/Data/MOCK_DATA.csv');
-//        ('%kernel.root_dir%/../src/Data/MOCK_DATA.csv')
+
         $reader->setDelimiter(",");
         $results = $reader->getRecords();
 
