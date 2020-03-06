@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\CsvType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,9 +33,17 @@ class AdminController extends AbstractController
         $user = $this->getUser();
         $utilisateursRepo = $em->getRepository(Participant::class);
         $liste = $utilisateursRepo->findAll();
+
+        //import de fichiers csv
+        $importForm = $this->createForm(CsvType::class);
+        $importForm->handleRequest($request);
+        $import = $importForm->get('csvImport')->getData();
+
+
         return $this->render('admin/listeUtilisateurs.html.twig', [
             "liste" => $liste,
-            "profil" => $user
+            "profil" => $user,
+            "importForm"=> $importForm->createView()
         ]);
     }
 
@@ -158,6 +167,24 @@ class AdminController extends AbstractController
         $this->addFlash("success", "l'utilisateur n'a plus les droits d'administrateur.");
         return $this->redirectToRoute('admin_ListeUtilisateurs');
 
+    }
+
+    /**
+     * @Route("/importCsv",name="importCsv")
+     */
+
+    public function importCsv(Request $request, EntityManagerInterface $em){
+        $user = $this->getUser();
+        $utilisateursRepo = $em->getRepository(Participant::class);
+        $liste = $utilisateursRepo->findAll();
+        $importForm = $this->createForm(CsvType::class);
+        $importForm->handleRequest($request);
+        $import = $importForm->get('csvImport')->getData();
+        return $this->render('admin/import.html.twig', [
+            "liste" => $liste,
+            "profil" => $user,
+            "importForm"=> $importForm->createView()
+        ]);
     }
 }
 

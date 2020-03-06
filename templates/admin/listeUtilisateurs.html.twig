@@ -73,11 +73,18 @@
         </div>
         <div class="col-sm-1"></div>
     </div>
+
     </div>
     <div class="row">
         <div class="col-sm-1"></div>
-        <div class="col-sm-11">
+        <div class="col-sm-11"><br>
             <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a>
-        </div> </div>
 
+    <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a><br>
+    {{ form_start(importForm) }}<br>
+    {{ form_widget(importForm) }}
+    <button type="submit" class="btn btn-secondary btn-lg">Importer des participants</button>  <a href="{{ path('admin_importCsv') }}">Annuler</a>
+    {{ form_end(importForm) }}
+        </div>
+    </div>
 {% endblock %}

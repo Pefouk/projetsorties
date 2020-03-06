@@ -251,9 +251,11 @@ class Participant implements UserInterface
     /**
      * @param mixed $pseudo
      */
-    public function setPseudo($pseudo): void
+    public function setPseudo($pseudo): self
     {
         $this->pseudo = $pseudo;
+
+        return $this;
     }
 
     /**
