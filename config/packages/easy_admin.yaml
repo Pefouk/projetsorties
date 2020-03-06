@@ -1,7 +1,7 @@
-#easy_admin:
-#  entities:
-#    Participant:
-#
-#      form:
-#        fields:
-#          - { property: 'avatar', type: 'vich_image' }
+easy_admin:
+  entities:
+    Participant:
+      class: App\Entity\Participant
+      form:
+        fields:
+          - { property: 'avatar', type: 'image' }

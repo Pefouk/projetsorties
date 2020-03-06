@@ -84,6 +84,7 @@ footer {
     font-family: 'Quicksand', serif;
     color: white;
     text-align: center;
+    z-index: 10;
 }
 
 main {
