@@ -72,12 +72,8 @@ class SortieAfficherController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function index(Request $request, EntityManagerInterface $entityManager)
+    public function liste(Request $request, EntityManagerInterface $entityManager)
     {
-        if (!$this->getUser() instanceof Participant) {
-            $this->addFlash('danger', 'Merci de vous connecter avant de poursuivre !');
-            return $this->redirectToRoute('app_login');
-        }
         $form = $this->createForm(FiltrerSortiesType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() && $this->verifierForm($form)) {
