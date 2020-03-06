@@ -15,7 +15,8 @@ class CsvType extends AbstractType
             ->add('csvImport', FileType::class,[
                 'label' => 'Fichier CSV :',
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+
             ])
         ;
     }

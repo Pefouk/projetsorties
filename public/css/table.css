@@ -42,7 +42,13 @@ nav {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 2;
+}
+
+.navbar-brand
+{
+    margin-left: 150px;
+    font-size: 24px;
 }
 
 .navbar-light .navbar-brand {
@@ -60,7 +66,7 @@ nav {
 }
 
 .navbar-light .navbar-nav .active > .nav-link:hover {
-    color: #9fa9b7;
+    color: #f1cf15;
 }
 
 .container-fluid {
@@ -189,11 +195,24 @@ text-align: center;
     border-style: solid;
     border-color: #f1cf15;
     text-align: center;
-    padding: 10px;
+    padding: 1%;
 }
 
 .hellotitle
 {
     color: #f1cf15;
     text-shadow: 1px 1px #ef9c15;
+}
+
+.enilogo
+{
+    margin-top: -50px;
+    width: 7%;
+    position: absolute;
+    z-index: 10;
+}
+
+.carousel-item active
+{
+    z-index: 20;
 }
