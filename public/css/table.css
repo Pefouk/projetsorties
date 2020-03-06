@@ -130,8 +130,10 @@ table {
 }
 
 .flash {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    margin-top: 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 
 .labelp
