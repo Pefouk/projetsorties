@@ -9,64 +9,82 @@
 
 {% block main %}
 
-    <h2 style="margin-top: 50px">Liste des utilisateurs</h2>
+    <div class="row">
+        <div class="col-sm-12">
 
-    <div class="table-responsive-md" style="margin-top: 50px">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Campus</th>
-                <th scope="col">Nom de l'utilisateur</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Téléphone</th>
-                <th scope="col">Administrateur</th>
-                <th scope="col">Etat</th>
-                <th scope="col">Photo</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for participant in liste %}
-                <tr>
-                    <td><a href="{{ path('profil', {'id': participant.id}) }}">{{ participant.pseudo }}</a></td>
-                    <td>{{ participant.campus.nom }}</td>
-                    <td>{{ participant.nom }}</td>
-                    <td>{{ participant.prenom }}</td>
-                    <td>{{ participant.telephone }}</td>
-                    {% if participant.administrateur %}
-                        <td>oui <a href="{{ path('admin_annulerAdmin', {'id': participant.id}) }}">Annuler Admin</a>
-                        </td>
-                    {% else %}
-                        <td>non <a href="{{ path('admin_passerAdmin', {'id': participant.id}) }}">passer Admin</a></td>
-                    {% endif %}
-                    {% if participant.actif %}
-                        <td style="background-color: #3c763d">actif</td>
-                    {% else %}
-                        <td style="background-color: #AA3333">Inactif</td>
-                    {% endif %}
-                    <td>{% if participant.avatar != null %}
-                            <img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"
-                                 width="20%">
-                        {% else %}
-                            <p>Pas d'image</p>
-                        {% endif %}
-                    </td>
-                    {% if participant.actif %}
-                        <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">Supprimer</a> <a
-                                    href="{{ path('admin_desactiver', {'id': participant.id}) }}">Desactiver</a></td>
-                    {% else %}
-                        <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">Supprimer</a>
-                            <a href="{{ path('admin_activer', {'id': participant.id}) }}">Activer</a></td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <h2 style="margin-top: 50px">Liste des utilisateurs</h2>
+        </div>
     </div>
-    <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a>
-    {{ form_start(importForm) }}
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <div class="table-responsive-md" style="margin-top: 50px">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Campus</th>
+                        <th scope="col">Nom de l'utilisateur</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Téléphone</th>
+                        <th scope="col">Administrateur</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for participant in liste %}
+                        <tr>
+                            <td><a href="{{ path('profil', {'id': participant.id}) }}">{{ participant.pseudo }}</a></td>
+                            <td>{{ participant.campus.nom }}</td>
+                            <td>{{ participant.nom }}</td>
+                            <td>{{ participant.prenom }}</td>
+                            <td>{{ participant.telephone }}</td>
+                            {% if participant.administrateur %}
+                                <td>oui <a href="{{ path('admin_annulerAdmin', {'id': participant.id}) }}">Annuler Admin</a>
+                                </td>
+                            {% else %}
+                                <td>non <a href="{{ path('admin_passerAdmin', {'id': participant.id}) }}">passer Admin</a></td>
+                            {% endif %}
+                            {% if participant.actif %}
+                                <td style="background-color: #3c763d">actif</td>
+                            {% else %}
+                                <td style="background-color: #AA3333">Inactif</td>
+                            {% endif %}
+                            <td>{% if participant.avatar != null %}
+                                    <img src="{{ asset('images/participant/') }}{{ participant.avatar }}" height="10%"
+                                         width="20%">
+                                {% else %}
+                                    <p>Pas d'image</p>
+                                {% endif %}
+                            </td>
+                            {% if participant.actif %}
+                                <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">supprimer</a> <a
+                                            href="{{ path('admin_desactiver', {'id': participant.id}) }}">desactiver</a></td>
+                            {% else %}
+                                <td><a href="{{ path('admin_supprimer', {'id': participant.id}) }}">supprimer</a>
+                                    <a href="{{ path('admin_activer', {'id': participant.id}) }}">activer</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-11"><br>
+            <a href="{{ path('admin_creerCompte') }}" class="btn btn-secondary btn-lg">Créer un compte</a>
+
+
+    {{ form_start(importForm) }}<br>
     {{ form_widget(importForm) }}
-    <button type="submit" class="btn btn-primary">Importer des participants</button>  <a href="{{ path('admin_importCsv') }}">Annuler</a>
+    <button type="submit" class="btn btn-secondary btn-lg">Importer des participants</button>  <a href="{{ path('admin_importCsv') }}">Annuler</a>
     {{ form_end(importForm) }}
+        </div>
+    </div>
 {% endblock %}

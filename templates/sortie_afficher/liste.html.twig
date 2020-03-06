@@ -27,7 +27,11 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <div class="flash">{{ include('inc/flashmessage.html.twig') }}</div>
+    <div class="section-hello">
+    <div class="hellocard">
+        <h4 class="hellotitle">Hello, {{ app.user.pseudo }} ϟ {{ "now"|date('d/m/Y') }}</h4>
+    </div>
+    </div>
     <div class="sorties">
 
         <div class="row">
