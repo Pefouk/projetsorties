@@ -10,7 +10,9 @@
             <div class="form-group">
                 {% if profil.avatar is not null %}
                     <div style="text-align: center;"><img src="{{ asset('images/participant/') }}{{ profil.avatar }}"
-                                                          width="300vw"></div>
+                                                          width="300vw"
+                                                          height="300vw"
+                        ></div>
                 {% else %}
                     <p>Pas d'image de profil</p>
                 {% endif %}
